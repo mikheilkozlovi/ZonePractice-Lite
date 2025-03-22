@@ -45,36 +45,33 @@ public class PlayerHider implements Listener {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-        // If the player becomes a spectator and enters the arena
-        if (e.getFrom().getWorld().equals(ServerManager.getLobby().getWorld()) && e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
-            if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
-                Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
+        // Handling SPECTATE mode regardless of lobby
+        if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
+            Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (player != p) {
-                        player.showPlayer(p); // Spectator sees all players
-                        p.hidePlayer(player); // But no one can see the spectator
-                    }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (player != p) {
+                    player.showPlayer(p); // Spectator sees all players
+                    p.hidePlayer(player); // But no one can see the spectator
                 }
             }
         }
 
-        // If the spectator remains in the arena (moving within the match)
-        if (e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) && e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
-            if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
-                Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
-
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (player != p) {
-                        player.showPlayer(p); // Spectator continues seeing all players
-                        p.hidePlayer(player); // But remains invisible to others
-                    }
-                }
-            }
+        // Transition from lobby to arena (depends on lobby)
+        if (ServerManager.getLobby() != null &&
+                e.getFrom().getWorld().equals(ServerManager.getLobby().getWorld()) &&
+                e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
         }
 
-        // If the player leaves the arena and returns to the lobby
-        if (e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) && e.getTo().getWorld().equals(ServerManager.getLobby().getWorld())) {
+        // Movement within the arena (does not depend on lobby, already handled for SPECTATE above)
+        if (e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) &&
+                e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
+        }
+
+        // Transition from arena to lobby (depends on lobby)
+        if (ServerManager.getLobby() != null &&
+                e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) &&
+                e.getTo().getWorld().equals(ServerManager.getLobby().getWorld())) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (player != p) {
                     if (p.hasPermission("zonepractice.staff.vanish") && !player.hasPermission("zonepractice.staff.vanish.bypass")) {
