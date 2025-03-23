@@ -1,6 +1,7 @@
 package dev.nandi0813.practice.Manager.Ladder;
 
 import dev.nandi0813.practice.Manager.File.LadderFile;
+import dev.nandi0813.practice.Util.ItemSerializationUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -8,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,26 +58,23 @@ public class Ladder {
             icon = config.getItemStack(iconPath);
 
         String armorPath = path + ".armor";
-        if (config.isSet(armorPath) && config.isList(armorPath)) {
-            List<ItemStack> armorList = new ArrayList<>();
-            for (Object obj : config.getList(armorPath)) {
-                if (obj instanceof ItemStack) {
-                    armorList.add((ItemStack) obj);
-                }
+        if (config.isSet(armorPath) && config.isString(armorPath))
+        {
+            try {
+                armor = ItemSerializationUtil.itemStackArrayFromBase64(config.getString(armorPath));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            armor = armorList.toArray(new ItemStack[0]);
         }
 
-        if (config.isList(path + ".inventory")) {
-            List<ItemStack> inventoryList = new ArrayList<>();
-            for (Object obj : config.getList(path + ".inventory")) {
-                if (obj instanceof ItemStack) {
-                    inventoryList.add((ItemStack) obj);
-                } else {
-                    System.err.println("[Ladder] Invalid inventory item for ladder " + id + ": " + obj);
-                }
+        String inventoryPath = path + ".inventory";
+        if (config.isSet(inventoryPath) && config.isString(inventoryPath))
+        {
+            try {
+                inventory = ItemSerializationUtil.itemStackArrayFromBase64(config.getString(inventoryPath));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            inventory = inventoryList.toArray(new ItemStack[0]);
         }
 
         String effectPath = path + ".effects";
@@ -135,26 +134,16 @@ public class Ladder {
             config.set(iconPath, icon);
         }
 
-        if (armor != null) {
+        if (armor != null)
+        {
             String armorPath = path + ".armor";
-            List<ItemStack> armorList = new ArrayList<>();
-            for (ItemStack item : armor) {
-                armorList.add(item);
-            }
-            config.set(armorPath, armorList);
+            config.set(armorPath, ItemSerializationUtil.itemStackArrayToBase64(armor));
         }
 
-        if (inventory != null) {
+        if (inventory != null)
+        {
             String inventoryPath = path + ".inventory";
-            List<ItemStack> inventoryList = new ArrayList<>();
-            for (ItemStack item : inventory) {
-                if (item == null) {
-                    item = new ItemStack(Material.AIR);
-                }
-
-                inventoryList.add(item);
-            }
-            config.set(inventoryPath, inventoryList);
+            config.set(inventoryPath, ItemSerializationUtil.itemStackArrayToBase64(inventory));
         }
 
         String effectPath = path + ".effects";

@@ -3,6 +3,7 @@ package dev.nandi0813.practice.Manager.Profile;
 import dev.nandi0813.practice.Manager.File.ConfigManager;
 import dev.nandi0813.practice.Manager.Ladder.Ladder;
 import dev.nandi0813.practice.Practice;
+import dev.nandi0813.practice.Util.ItemSerializationUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -70,16 +71,12 @@ public class ProfileFile {
         }
 
         // Custom kits
-        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
+        for (Ladder ladder : Practice.getLadderManager().getLadders())
+        {
             if (!ladder.isEnabled()) continue;
 
-            if (profile.getCustomKits().containsKey(ladder) && profile.getCustomKits().get(ladder) != null) {
-                List<ItemStack> inventoryList = new ArrayList<>();
-                for (ItemStack item : profile.getCustomKits().get(ladder)) {
-                    inventoryList.add(item);
-                }
-                config.set("customkit.ladder" + ladder.getId() + ".inventory", inventoryList);
-            }
+            if (profile.getCustomKits().containsKey(ladder) && profile.getCustomKits().get(ladder) != null)
+                config.set("customkit.ladder" + ladder.getId() + ".inventory", ItemSerializationUtil.itemStackArrayToBase64(profile.getCustomKits().get(ladder)));
         }
 
         saveFile();
@@ -152,13 +149,11 @@ public class ProfileFile {
 
         for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (config.isString("customkit.ladder" + ladder.getId() + ".inventory")) {
-                List<ItemStack> inventoryList = new ArrayList<>();
-                for (Object obj : config.getList("customkit.ladder" + ladder.getId() + ".inventory")) {
-                    if (obj instanceof ItemStack) {
-                        inventoryList.add((ItemStack) obj);
-                    }
+                try {
+                    profile.getCustomKits().put(ladder, ItemSerializationUtil.itemStackArrayFromBase64(config.getString("customkit.ladder" + ladder.getId() + ".inventory")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                profile.getCustomKits().put(ladder, inventoryList.toArray(new ItemStack[0]));
             }
         }
     }
