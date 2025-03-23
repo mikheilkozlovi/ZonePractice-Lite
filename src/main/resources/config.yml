@@ -34,7 +34,7 @@ ranked:
 #
 # Match settings
 match-settings:
-  build-limit: 4 # Counts from the first players positions y level.
+  build-limit: 8 # Counts from the first players positions y level.
   start-countdown: 5 # Countdown when the match starts.
   after-countdown: 3 # After the match is over this countdown start, and when it's over the players teleport back to lobby.
   remove-empty-bottle: true # Removes empty potion bottles after the player use it.
