@@ -58,7 +58,7 @@ public class LadderManager
                 if (ladder.isEnabled() && ladder.getIcon() != null) {
                     unrankedLadders.add(ladder);
 
-                    if (ladder.isRegen()) {
+                    if (ladder.isRanked()) {
                         rankedLadders.add(ladder);
                     }
                 }
