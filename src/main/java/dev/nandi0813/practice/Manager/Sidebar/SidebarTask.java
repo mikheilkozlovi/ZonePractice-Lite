@@ -9,7 +9,7 @@ public class SidebarTask extends BukkitRunnable implements Runnable
 
     public void begin()
     {
-        this.runTaskTimerAsynchronously(Practice.getInstance(), 0, 5L);
+        this.runTaskTimer(Practice.getInstance(), 0, 5L);
     }
 
     /**

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Duel
 {
-    
+
     public static void startMatch(Match match)
     {
         Player player1 = match.getPlayers().get(0);
@@ -101,11 +101,11 @@ public class Duel
             {
                 int elochange = ConfigManager.getInt("ranked.elo-change");
 
-                int winnerOldElo = winnerProfile.getElo().get(match.getLadder());
+                int winnerOldElo = winnerProfile.getElo().getOrDefault(match.getLadder(), 1000);
                 int winnerNewElo = winnerOldElo + elochange;
                 winnerProfile.getElo().put(match.getLadder(), winnerNewElo);
 
-                int loserOldElo = loserProfile.getElo().get(match.getLadder());
+                int loserOldElo = loserProfile.getElo().getOrDefault(match.getLadder(), 1000);
                 int loserNewElo;
 
                 if (loserOldElo >= 100)
