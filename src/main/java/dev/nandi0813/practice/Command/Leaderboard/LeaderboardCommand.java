@@ -94,7 +94,7 @@ public class LeaderboardCommand implements CommandExecutor {
                     UUID playerUUID = profile.getPlayer().getUniqueId();
 
                     if (engine.equalsIgnoreCase("elo")) {
-                        int elo = profile.getElo().getOrDefault(ladder, 0);
+                        int elo = profile.getElo().getOrDefault(ladder, 1000);
                         leaderboard.put(playerUUID, elo);
                     } else {
                         int unrankedWin = profile.getLadderUnRankedWins().getOrDefault(ladder, 0);

@@ -71,7 +71,7 @@ public class StatsGui extends GUI
                         for (String line : LanguageManager.getList("gui.stats.ladder.ranked.lore"))
                         {
                             lore.add(line
-                                    .replaceAll("%elo%", String.valueOf(profile.getElo().get(ladder)))
+                                    .replaceAll("%elo%", String.valueOf(profile.getElo().getOrDefault(ladder, 1000)))
                                     .replaceAll("%unrankedWins%", String.valueOf(profile.getLadderUnRankedWins().get(ladder)))
                                     .replaceAll("%unrankedLosses%", String.valueOf(profile.getLadderUnRankedLosses().get(ladder)))
                                     .replaceAll("%rankedWins%", String.valueOf(profile.getLadderRankedWins().get(ladder)))
