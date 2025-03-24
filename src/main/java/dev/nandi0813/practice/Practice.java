@@ -41,25 +41,34 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Practice extends JavaPlugin
-{
+public final class Practice extends JavaPlugin {
 
-    @Getter private static Practice instance;
+    @Getter
+    private static Practice instance;
 
-    @Getter private static ArenaManager arenaManager;
-    @Getter private static LadderManager ladderManager;
-    @Getter private static ProfileManager profileManager;
-    @Getter private static GUIManager guiManager;
-    @Getter private static MatchManager matchManager;
-    @Getter private static QueueManager queueManager;
-    @Getter private static PartyManager partyManager;
-    @Getter private static InventoryManager inventoryManager;
-    @Getter private static SidebarManager sidebarManager;
-    @Getter private static EntityHider entityHider;
+    @Getter
+    private static ArenaManager arenaManager;
+    @Getter
+    private static LadderManager ladderManager;
+    @Getter
+    private static ProfileManager profileManager;
+    @Getter
+    private static GUIManager guiManager;
+    @Getter
+    private static MatchManager matchManager;
+    @Getter
+    private static QueueManager queueManager;
+    @Getter
+    private static PartyManager partyManager;
+    @Getter
+    private static InventoryManager inventoryManager;
+    @Getter
+    private static SidebarManager sidebarManager;
+    @Getter
+    private static EntityHider entityHider;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         instance = this;
 
         ConfigManager.createConfig(this);
@@ -89,8 +98,7 @@ public final class Practice extends JavaPlugin
         new Metrics(this, 16054);
     }
 
-    public void loadManagers()
-    {
+    public void loadManagers() {
         arenaManager = new ArenaManager();
         ladderManager = new LadderManager();
         profileManager = new ProfileManager();
@@ -103,8 +111,7 @@ public final class Practice extends JavaPlugin
         entityHider = new EntityHider(Practice.getInstance(), EntityHider.Policy.BLACKLIST);
     }
 
-    public static void registerCommands()
-    {
+    public static void registerCommands() {
         Bukkit.getServer().getPluginCommand("arena").setExecutor(new ArenaCommand());
         Bukkit.getServer().getPluginCommand("arena").setTabCompleter(new ArenaTabCompleter());
 
@@ -127,8 +134,7 @@ public final class Practice extends JavaPlugin
         Bukkit.getServer().getPluginCommand("statistics").setExecutor(new StatsCommand());
     }
 
-    public static void registerListeners(Practice practice, PluginManager pm)
-    {
+    public static void registerListeners(Practice practice, PluginManager pm) {
         pm.registerEvents(new PlayerJoin(), practice);
         pm.registerEvents(new PlayerQuit(), practice);
         pm.registerEvents(new PlayerInteract(), practice);
@@ -142,18 +148,16 @@ public final class Practice extends JavaPlugin
         pm.registerEvents(new MultiGameListener(), practice);
     }
 
-    public static void registerPacketListener()
-    {
-        try
-        {
+    public static void registerPacketListener() {
+        try {
             ProtocolLibrary.getProtocolManager().addPacketListener(new EntityHiderListener());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) { e.printStackTrace(); }
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         ladderManager.saveLadders();
         arenaManager.saveArenas();
         profileManager.saveProfiles();

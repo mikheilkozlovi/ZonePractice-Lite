@@ -71,8 +71,7 @@ public class ProfileFile {
         }
 
         // Custom kits
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (!ladder.isEnabled()) continue;
 
             if (profile.getCustomKits().containsKey(ladder) && profile.getCustomKits().get(ladder) != null)

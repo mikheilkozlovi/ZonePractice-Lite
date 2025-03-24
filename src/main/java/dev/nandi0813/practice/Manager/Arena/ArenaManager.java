@@ -15,16 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class ArenaManager
-{
+public class ArenaManager {
 
-    @Getter private World arenasWorld;
-    @Getter private final List<Arena> arenas = new ArrayList<>();
-    @Getter private final HashMap<Cuboid, Arena> arenaCuboids = new HashMap<>();
-    @Getter private final File folder = new File(Practice.getInstance().getDataFolder() + "/arenas");
+    @Getter
+    private World arenasWorld;
+    @Getter
+    private final List<Arena> arenas = new ArrayList<>();
+    @Getter
+    private final HashMap<Cuboid, Arena> arenaCuboids = new HashMap<>();
+    @Getter
+    private final File folder = new File(Practice.getInstance().getDataFolder() + "/arenas");
 
-    public ArenaManager()
-    {
+    public ArenaManager() {
         Bukkit.getPluginManager().registerEvents(new RollbackListener(Practice.getInstance()), Practice.getInstance());
 
         arenasWorld = Bukkit.getWorld("arenas");
@@ -37,12 +39,9 @@ public class ArenaManager
      * @param arenaName The name of the arena you want to get.
      * @return The arena with the name that is passed in.
      */
-    public Arena getArena(String arenaName)
-    {
-        for (Arena arena : arenas)
-        {
-            if (arena.getName().equalsIgnoreCase(arenaName))
-            {
+    public Arena getArena(String arenaName) {
+        for (Arena arena : arenas) {
+            if (arena.getName().equalsIgnoreCase(arenaName)) {
                 return arena;
             }
         }
@@ -54,8 +53,7 @@ public class ArenaManager
      *
      * @return An ArrayList of enabled arenas.
      */
-    public ArrayList<Arena> getEnabledArenas()
-    {
+    public ArrayList<Arena> getEnabledArenas() {
         ArrayList<Arena> enabledArenas = new ArrayList<>();
         for (Arena arena : arenas)
             if (arena.isEnabled()) enabledArenas.add(arena);
@@ -66,11 +64,10 @@ public class ArenaManager
      * Get all enabled arenas that are available and have the same build status as the parameter.
      *
      * @param build If true, only arenas that are built will be returned. If false, only arenas that are not built will be
-     * returned.
+     *              returned.
      * @return An ArrayList of Arena objects.
      */
-    public ArrayList<Arena> getAvailableArenas(boolean build)
-    {
+    public ArrayList<Arena> getAvailableArenas(boolean build) {
         ArrayList<Arena> availableArenas = new ArrayList<>();
         for (Arena arena : getEnabledArenas())
             if (arena.isAvailable() && arena.isBuild() == build)
@@ -80,15 +77,14 @@ public class ArenaManager
 
     /**
      * "Get a random arena from the list of available arenas."
-     *
+     * <p>
      * The first line of the function is a comment. Comments are ignored by the compiler, but they are useful for
      * explaining what the code does
      *
      * @param build If true, the arena will be built if it's not already built.
      * @return A random arena from the list of available arenas.
      */
-    public Arena getRandomArena(boolean build)
-    {
+    public Arena getRandomArena(boolean build) {
         Random random = new Random();
         ArrayList<Arena> availableArenas = getAvailableArenas(build);
         if (availableArenas.size() > 0)
@@ -102,16 +98,12 @@ public class ArenaManager
      * ends with ".yml", then load the file as a YamlConfiguration, get the name of the arena from the file, and add a new
      * Arena to the list of arenas
      */
-    public void loadArenas()
-    {
+    public void loadArenas() {
         if (!folder.exists()) folder.mkdir();
 
-        if (folder.isDirectory() && folder.listFiles().length > 0)
-        {
-            for (File arenaFile : folder.listFiles())
-            {
-                if (arenaFile.isFile() && arenaFile.getName().endsWith(".yml"))
-                {
+        if (folder.isDirectory() && folder.listFiles().length > 0) {
+            for (File arenaFile : folder.listFiles()) {
+                if (arenaFile.isFile() && arenaFile.getName().endsWith(".yml")) {
                     YamlConfiguration config = YamlConfiguration.loadConfiguration(arenaFile);
                     String name = config.getString("name");
                     arenas.add(new Arena(name));
@@ -120,8 +112,7 @@ public class ArenaManager
         }
     }
 
-    public void saveArenas()
-    {
+    public void saveArenas() {
         for (Arena arena : arenas)
             arena.saveData();
     }
@@ -129,10 +120,8 @@ public class ArenaManager
     /**
      * Create a new world called "arenas" with the world type "FLAT" and the generator settings "2;0;1;"
      */
-    public void createArenaWorld()
-    {
-        if (arenasWorld == null)
-        {
+    public void createArenaWorld() {
+        if (arenasWorld == null) {
             WorldCreator wc = new WorldCreator(ConfigManager.getConfig().getString("arena-world-name"));
             wc.type(WorldType.FLAT);
             wc.generatorSettings("2;0;1;");

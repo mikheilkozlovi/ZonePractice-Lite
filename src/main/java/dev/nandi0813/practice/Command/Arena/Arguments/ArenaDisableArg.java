@@ -6,29 +6,21 @@ import dev.nandi0813.practice.Practice;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class ArenaDisableArg
-{
+public class ArenaDisableArg {
 
-    public static void DisableCommand(Player player, String label, String[] args)
-    {
-        if (args.length == 2)
-        {
+    public static void DisableCommand(Player player, String label, String[] args) {
+        if (args.length == 2) {
             String arenaName = args[1];
             Arena arena = Practice.getArenaManager().getArena(arenaName);
 
-            if (arena != null)
-            {
-                if (arena.isEnabled())
-                {
+            if (arena != null) {
+                if (arena.isEnabled()) {
                     ArenaUtil.changeStatus(player, arena);
-                }
-                else
+                } else
                     player.sendMessage(StringUtil.CC("&cArena is already disabled."));
-            }
-            else
+            } else
                 player.sendMessage(StringUtil.CC("&cArena doesn't exists."));
-        }
-        else
+        } else
             player.sendMessage(StringUtil.CC(" &c » /" + label + " disable <name>"));
     }
 

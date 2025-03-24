@@ -11,31 +11,49 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PlayerMatchStat
-{
+public class PlayerMatchStat {
 
-    @Getter private final OfflinePlayer player;
-    @Getter @Setter private boolean isSet;
+    @Getter
+    private final OfflinePlayer player;
+    @Getter
+    @Setter
+    private boolean isSet;
 
-    @Getter private final HashMap<Long, Integer> cps = new HashMap<>();
-    @Getter private double averageCPS;
-    @Getter @Setter private int hit = 0;
-    @Getter @Setter private int getHit = 0;
-    @Getter @Setter private int longestCombo = 0;
+    @Getter
+    private final HashMap<Long, Integer> cps = new HashMap<>();
+    @Getter
+    private double averageCPS;
+    @Getter
+    @Setter
+    private int hit = 0;
+    @Getter
+    @Setter
+    private int getHit = 0;
+    @Getter
+    @Setter
+    private int longestCombo = 0;
 
-    @Getter @Setter private double endHeart = 0;
-    @Getter @Setter private double endHunger = 0;
-    @Getter @Setter private List<PotionEffect> endPotionEffects = new ArrayList<>();
-    @Getter @Setter private ItemStack[] endArmor = null;
-    @Getter @Setter private ItemStack[] endInventory = null;
+    @Getter
+    @Setter
+    private double endHeart = 0;
+    @Getter
+    @Setter
+    private double endHunger = 0;
+    @Getter
+    @Setter
+    private List<PotionEffect> endPotionEffects = new ArrayList<>();
+    @Getter
+    @Setter
+    private ItemStack[] endArmor = null;
+    @Getter
+    @Setter
+    private ItemStack[] endInventory = null;
 
-    public PlayerMatchStat(OfflinePlayer player)
-    {
+    public PlayerMatchStat(OfflinePlayer player) {
         this.player = player;
     }
 
-    public void end()
-    {
+    public void end() {
         isSet = true;
 
         int sumCps = cps.values().stream().mapToInt(Integer::intValue).sum();
@@ -44,10 +62,8 @@ public class PlayerMatchStat
 
         Player online = player.getPlayer();
 
-        if (online != null)
-        {
-            if (MatchStatListener.getCurrentCombo().containsKey(online))
-            {
+        if (online != null) {
+            if (MatchStatListener.getCurrentCombo().containsKey(online)) {
                 int combo = MatchStatListener.getCurrentCombo().get(online);
                 if (combo > longestCombo)
                     longestCombo = combo;

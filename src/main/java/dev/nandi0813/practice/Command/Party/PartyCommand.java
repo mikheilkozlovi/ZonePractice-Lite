@@ -9,19 +9,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PartyCommand implements CommandExecutor
-{
+public class PartyCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-            if (!profile.getStatus().equals(ProfileStatus.OFFLINE))
-            {
+            if (!profile.getStatus().equals(ProfileStatus.OFFLINE)) {
                 if (args.length == 0)
                     PartyHelpArg.HelpCommand(player, label);
 

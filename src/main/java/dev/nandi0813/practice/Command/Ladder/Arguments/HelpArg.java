@@ -3,11 +3,9 @@ package dev.nandi0813.practice.Command.Ladder.Arguments;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class HelpArg
-{
+public class HelpArg {
 
-    public static void run(Player player, String label)
-    {
+    public static void run(Player player, String label) {
         player.sendMessage(StringUtil.CC("&c&m------------------------------------------------"));
         player.sendMessage(StringUtil.CC(" &c» /" + label + " list &7- &fList all the ladders."));
         player.sendMessage(StringUtil.CC(" &c» /" + label + " info <id>/<name> &7- &fGet information on a ladder."));

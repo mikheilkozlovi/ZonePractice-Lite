@@ -8,11 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class ItemUtil
-{
+public class ItemUtil {
 
-    public static ItemStack createItemWithAmount(String displayname, Material material, int amount, List<String> lore)
-    {
+    public static ItemStack createItemWithAmount(String displayname, Material material, int amount, List<String> lore) {
         ItemStack itemstack = new ItemStack(material, amount);
         ItemMeta itemmeta = itemstack.getItemMeta();
         itemmeta.setDisplayName(StringUtil.CC(displayname));
@@ -22,8 +20,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(String displayname, Material material)
-    {
+    public static ItemStack createItem(String displayname, Material material) {
         ItemStack itemstack = new ItemStack(material);
         ItemMeta itemmeta = itemstack.getItemMeta();
         itemmeta.setDisplayName(StringUtil.CC(displayname));
@@ -32,8 +29,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(Material material, Short damage)
-    {
+    public static ItemStack createItem(Material material, Short damage) {
         ItemStack itemstack = new ItemStack(material, 1, damage);
         ItemMeta itemmeta = itemstack.getItemMeta();
         hideItemFlags(itemmeta);
@@ -41,8 +37,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(String displayname, Material material, Short damage)
-    {
+    public static ItemStack createItem(String displayname, Material material, Short damage) {
         ItemStack itemstack = new ItemStack(material, 1, damage);
         ItemMeta itemmeta = itemstack.getItemMeta();
         itemmeta.setDisplayName(StringUtil.CC(displayname));
@@ -50,8 +45,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(String displayname, Material material, List<String> lore)
-    {
+    public static ItemStack createItem(String displayname, Material material, List<String> lore) {
         ItemStack itemstack = new ItemStack(material);
         ItemMeta itemmeta = itemstack.getItemMeta();
         itemmeta.setDisplayName(StringUtil.CC(displayname));
@@ -61,8 +55,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(String displayname, Material material, List<String> lore, boolean enchantEffect)
-    {
+    public static ItemStack createItem(String displayname, Material material, List<String> lore, boolean enchantEffect) {
         ItemStack itemstack = new ItemStack(material);
         ItemMeta itemmeta = itemstack.getItemMeta();
         if (enchantEffect) itemmeta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -73,8 +66,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(String displayname, Material material, Short damage, List<String> lore)
-    {
+    public static ItemStack createItem(String displayname, Material material, Short damage, List<String> lore) {
         ItemStack itemstack = new ItemStack(material, 1, damage);
         ItemMeta itemmeta = itemstack.getItemMeta();
         itemmeta.setDisplayName(StringUtil.CC(displayname));
@@ -84,8 +76,7 @@ public class ItemUtil
         return itemstack;
     }
 
-    public static ItemStack createItem(ItemStack item, List<String> lore)
-    {
+    public static ItemStack createItem(ItemStack item, List<String> lore) {
         ItemStack itemstack = new ItemStack(item.getType());
         itemstack.setDurability(item.getDurability());
         if (item.hasItemMeta()) {
@@ -99,8 +90,7 @@ public class ItemUtil
     }
 
 
-    public static void hideItemFlags(ItemMeta itemMeta)
-    {
+    public static void hideItemFlags(ItemMeta itemMeta) {
         itemMeta.spigot().setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
@@ -108,8 +98,7 @@ public class ItemUtil
         itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
     }
 
-    public static ItemStack hideItemFlags(ItemStack item)
-    {
+    public static ItemStack hideItemFlags(ItemStack item) {
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

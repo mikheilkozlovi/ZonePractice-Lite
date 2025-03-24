@@ -7,25 +7,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LadderCommand implements CommandExecutor
-{
+public class LadderCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) return false;
 
         Player player = (Player) sender;
-        if (!player.hasPermission("zonepractice.setup"))
-        {
+        if (!player.hasPermission("zonepractice.setup")) {
             player.sendMessage(LanguageManager.getString("no-permission"));
             return false;
         }
 
-        if (args.length > 0)
-        {
-            switch (args[0])
-            {
+        if (args.length > 0) {
+            switch (args[0]) {
                 case "setname":
                     SetNameArg.run(player, label, args);
                     break;
@@ -69,8 +64,7 @@ public class LadderCommand implements CommandExecutor
                 default:
                     HelpArg.run(player, label);
             }
-        }
-        else
+        } else
             HelpArg.run(player, label);
 
         return true;

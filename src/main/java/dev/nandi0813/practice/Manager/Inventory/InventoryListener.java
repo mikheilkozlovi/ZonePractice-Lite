@@ -13,12 +13,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
-public class InventoryListener implements Listener
-{
+public class InventoryListener implements Listener {
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e)
-    {
+    public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         ProfileManager profileManager = Practice.getProfileManager();
         Profile profile = profileManager.getProfiles().get(player);
@@ -30,8 +28,7 @@ public class InventoryListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerDropItem(PlayerDropItemEvent e)
-    {
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
         ProfileManager profileManager = Practice.getProfileManager();
         Profile profile = profileManager.getProfiles().get(player);
@@ -43,8 +40,7 @@ public class InventoryListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerPickupItem(PlayerPickupItemEvent e)
-    {
+    public void onPlayerPickupItem(PlayerPickupItemEvent e) {
         Player player = e.getPlayer();
         ProfileManager profileManager = Practice.getProfileManager();
         Profile profile = profileManager.getProfiles().get(player);
@@ -56,15 +52,12 @@ public class InventoryListener implements Listener
     }
 
     @EventHandler
-    public void onHunger(FoodLevelChangeEvent e)
-    {
-        if (e.getEntity() instanceof Player)
-        {
+    public void onHunger(FoodLevelChangeEvent e) {
+        if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-            if (profile.getStatus().equals(ProfileStatus.LOBBY) || profile.getStatus().equals(ProfileStatus.QUEUE))
-            {
+            if (profile.getStatus().equals(ProfileStatus.LOBBY) || profile.getStatus().equals(ProfileStatus.QUEUE)) {
                 e.setCancelled(true);
                 e.setFoodLevel(20);
             }
@@ -72,10 +65,8 @@ public class InventoryListener implements Listener
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent e)
-    {
-        if (e.getEntity() instanceof Player)
-        {
+    public void onEntityDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 

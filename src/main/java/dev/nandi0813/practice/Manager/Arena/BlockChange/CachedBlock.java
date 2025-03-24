@@ -11,16 +11,17 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public class CachedBlock
-{
+public class CachedBlock {
 
-    @Getter private final Location location;
-    @Getter private final Material oldMaterial;
-    @Getter private final byte oldData;
+    @Getter
+    private final Location location;
+    @Getter
+    private final Material oldMaterial;
+    @Getter
+    private final byte oldData;
     private ItemStack[] chestInventory;
 
-    public CachedBlock(Location location, Block oldBlock)
-    {
+    public CachedBlock(Location location, Block oldBlock) {
         this.oldMaterial = oldBlock.getType();
         this.oldData = oldBlock.getData();
         this.location = location;
@@ -28,8 +29,7 @@ public class CachedBlock
     }
 
 
-    public CachedBlock(Location location, Material type, byte data)
-    {
+    public CachedBlock(Location location, Material type, byte data) {
         this.oldMaterial = type;
         this.oldData = data;
         this.location = location;
@@ -41,26 +41,20 @@ public class CachedBlock
      *
      * @param loc The location of the chest
      */
-    private void saveChest(Location loc)
-    {
-        try
-        {
+    private void saveChest(Location loc) {
+        try {
             Block block = loc.getBlock();
 
-            if (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)
-            {
+            if (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) {
                 Chest chest = (Chest) block.getState();
                 InventoryHolder h = chest.getInventory().getHolder();
                 chestInventory = h.getInventory().getContents();
 
-                for (ItemStack is : chestInventory)
-                {
+                for (ItemStack is : chestInventory) {
                     if (is != null && is.getAmount() <= 0) is.setAmount(is.getAmount());
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Bukkit.getLogger().info("Arena regen failed to save chest contents");
         }
     }
@@ -69,36 +63,30 @@ public class CachedBlock
      * If the location is not null and the old material is not null, set the block at the location to the old material and
      * data, and update the block
      */
-    public void reset()
-    {
-        if (location != null && oldMaterial != null)
-        {
+    public void reset() {
+        if (location != null && oldMaterial != null) {
             location.getBlock().setType(oldMaterial);
             location.getBlock().setData(oldData);
             location.getBlock().getState().update(false);
 
-            if (chestInventory != null && (oldMaterial == Material.CHEST || oldMaterial == Material.TRAPPED_CHEST))
-            {
+            if (chestInventory != null && (oldMaterial == Material.CHEST || oldMaterial == Material.TRAPPED_CHEST)) {
                 Block block = location.getBlock();
                 Chest chest = (Chest) block.getState();
                 InventoryHolder h = chest.getInventory().getHolder();
                 h.getInventory().setContents(chestInventory);
 
-                for (ItemStack is : h.getInventory().getContents())
-                {
+                for (ItemStack is : h.getInventory().getContents()) {
                     if (is != null && is.getAmount() <= 0) is.setAmount(1);
                 }
             }
         }
     }
 
-    public static CachedBlock getByLocation(Location l, Collection<CachedBlock> list)
-    {
+    public static CachedBlock getByLocation(Location l, Collection<CachedBlock> list) {
         for (CachedBlock c : list)
             if (l.equals(c.getLocation())) return c;
         return null;
     }
-
 
 
 }

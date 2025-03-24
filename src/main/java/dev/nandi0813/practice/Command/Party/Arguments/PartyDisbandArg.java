@@ -6,28 +6,20 @@ import dev.nandi0813.practice.Practice;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class PartyDisbandArg
-{
+public class PartyDisbandArg {
 
-    public static void DisbandCommand(Player player, String label, String[] args)
-    {
-        if (args.length == 1)
-        {
+    public static void DisbandCommand(Player player, String label, String[] args) {
+        if (args.length == 1) {
             Party party = Practice.getPartyManager().getParty(player);
 
-            if (party != null)
-            {
-                if (party.getLeader().equals(player))
-                {
+            if (party != null) {
+                if (party.getLeader().equals(player)) {
                     party.disband();
-                }
-                else
+                } else
                     player.sendMessage(LanguageManager.getString("party.not-leader"));
-            }
-            else
+            } else
                 player.sendMessage(LanguageManager.getString("party.not-member"));
-        }
-        else
+        } else
             player.sendMessage(StringUtil.CC("&c/" + label + " disband"));
     }
 

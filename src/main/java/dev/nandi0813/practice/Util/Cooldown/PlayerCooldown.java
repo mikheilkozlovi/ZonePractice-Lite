@@ -5,15 +5,13 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class PlayerCooldown
-{
+public class PlayerCooldown {
 
-    @Getter private static final HashMap<Player, HashMap<CooldownObject, Long>> cooldowns = new HashMap<>();
+    @Getter
+    private static final HashMap<Player, HashMap<CooldownObject, Long>> cooldowns = new HashMap<>();
 
-    public static void addCooldown(Player player, CooldownObject object, int time)
-    {
-        if (!getCooldowns().containsKey(player))
-        {
+    public static void addCooldown(Player player, CooldownObject object, int time) {
+        if (!getCooldowns().containsKey(player)) {
             HashMap<CooldownObject, Long> cooldowns = new HashMap<>();
             getCooldowns().put(player, cooldowns);
         }
@@ -22,21 +20,18 @@ public class PlayerCooldown
         getCooldowns().put(player, cooldowns);
     }
 
-    public static void removeCooldown(Player player, CooldownObject object)
-    {
+    public static void removeCooldown(Player player, CooldownObject object) {
         if (cooldowns.containsKey(player))
             cooldowns.get(player).remove(object);
     }
 
-    public static boolean isActive(Player player, CooldownObject object)
-    {
+    public static boolean isActive(Player player, CooldownObject object) {
         if (cooldowns.containsKey(player))
             return cooldowns.get(player).containsKey(object) && System.currentTimeMillis() < cooldowns.get(player).get(object);
         return false;
     }
 
-    public static long getLeft(Player player, CooldownObject object)
-    {
+    public static long getLeft(Player player, CooldownObject object) {
         if (isActive(player, object))
             return Math.max(cooldowns.get(player).get(object) - System.currentTimeMillis(), 0L);
         return 0L;

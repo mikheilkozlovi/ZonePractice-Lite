@@ -23,14 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LadderSelector extends GUI
-{
+public class LadderSelector extends GUI {
 
-    @Getter private final MatchType matchType;
+    @Getter
+    private final MatchType matchType;
     private final Map<Integer, Ladder> ladderSlots = new HashMap<>();
 
-    public LadderSelector(MatchType matchType)
-    {
+    public LadderSelector(MatchType matchType) {
         super(GUIType.LADDER_SELECTOR);
         this.matchType = matchType;
 
@@ -40,19 +39,16 @@ public class LadderSelector extends GUI
     }
 
     @Override
-    public void build()
-    {
+    public void build() {
         update();
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         gui.get(1).clear();
         ladderSlots.clear();
 
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (!ladder.isEnabled()) continue;
             if (ladder.getIcon() == null) continue;
 
@@ -61,8 +57,7 @@ public class LadderSelector extends GUI
             ItemUtil.hideItemFlags(iconMeta);
 
             List<String> lore = new ArrayList<>();
-            for (String line : LanguageManager.getList("gui.ladder-selector.item-lore"))
-            {
+            for (String line : LanguageManager.getList("gui.ladder-selector.item-lore")) {
                 lore.add(StringUtil.CC(line
                         .replaceAll("%ladderName%", ladder.getName())
                         .replaceAll("%matchTypeName%", matchType.getName())));
@@ -79,22 +74,19 @@ public class LadderSelector extends GUI
     }
 
     @Override
-    public void handleClickEvent(InventoryClickEvent e)
-    {
+    public void handleClickEvent(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         Party party = Practice.getPartyManager().getParty(player);
         int slot = e.getRawSlot();
 
         e.setCancelled(true);
 
-        if (party == null)
-        {
+        if (party == null) {
             player.closeInventory();
             return;
         }
 
-        if (party.getMembers().size() < 2)
-        {
+        if (party.getMembers().size() < 2) {
             player.closeInventory();
             player.sendMessage(LanguageManager.getString("party.game-cant-start"));
         }
@@ -102,21 +94,18 @@ public class LadderSelector extends GUI
         if (!ladderSlots.containsKey(slot)) return;
         Ladder ladder = ladderSlots.get(slot);
 
-        if (!ladder.isEnabled())
-        {
+        if (!ladder.isEnabled()) {
             update();
             return;
         }
 
         Arena arena = Practice.getArenaManager().getRandomArena(ladder.isBuild());
-        if (arena != null)
-        {
+        if (arena != null) {
             List<Player> matchPlayers = new ArrayList<>(party.getMembers());
             Match match = new Match(matchType, matchPlayers, ladder, false, arena);
             party.setMatch(match);
             match.startMatch();
-        }
-        else
+        } else
             player.sendMessage(LanguageManager.getString("party.no-available-arena"));
 
         player.closeInventory();

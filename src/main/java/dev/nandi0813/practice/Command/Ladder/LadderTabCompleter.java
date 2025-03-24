@@ -12,12 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LadderTabCompleter implements TabCompleter
-{
+public class LadderTabCompleter implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args)
-    {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) return null;
 
         Player player = (Player) commandSender;
@@ -28,8 +26,7 @@ public class LadderTabCompleter implements TabCompleter
         List<String> arguments = new ArrayList<>();
         List<String> completion = new ArrayList<>();
 
-        if (args.length == 1)
-        {
+        if (args.length == 1) {
             arguments.add("setname");
             arguments.add("seticon");
             arguments.add("setinv");
@@ -45,11 +42,8 @@ public class LadderTabCompleter implements TabCompleter
             arguments.add("info");
 
             StringUtil.copyPartialMatches(args[0], arguments, completion);
-        }
-        else if (args.length == 2)
-        {
-            switch (args[0])
-            {
+        } else if (args.length == 2) {
+            switch (args[0]) {
                 case "info":
                 case "setname":
                 case "seticon":
@@ -62,8 +56,7 @@ public class LadderTabCompleter implements TabCompleter
                 case "sethunger":
                 case "setbuild":
                 case "setenable":
-                    for (Ladder ladder : Practice.getLadderManager().getLadders())
-                    {
+                    for (Ladder ladder : Practice.getLadderManager().getLadders()) {
                         arguments.add(String.valueOf(ladder.getId()));
                         if (ladder.getName() != null)
                             arguments.add(ladder.getName());

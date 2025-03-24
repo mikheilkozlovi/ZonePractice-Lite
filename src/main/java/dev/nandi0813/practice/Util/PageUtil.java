@@ -5,23 +5,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageUtil
-{
+public class PageUtil {
 
-    public static List<ItemStack> getPageItems(List<ItemStack> items, int page, int spaces)
-    {
+    public static List<ItemStack> getPageItems(List<ItemStack> items, int page, int spaces) {
         int upperBound = page * spaces;
         int lowerBound = upperBound - spaces;
 
         List<ItemStack> newItems = new ArrayList<>();
-        for (int i = lowerBound; i < upperBound; i++)
-        {
-            try
-            {
+        for (int i = lowerBound; i < upperBound; i++) {
+            try {
                 newItems.add(items.get(i));
-            }
-            catch (IndexOutOfBoundsException x)
-            {
+            } catch (IndexOutOfBoundsException x) {
                 break;
             }
         }
@@ -29,10 +23,8 @@ public class PageUtil
         return newItems;
     }
 
-    public static boolean isPageValid(List<ItemStack> items, int page, int spaces)
-    {
-        if (page <= 0)
-        {
+    public static boolean isPageValid(List<ItemStack> items, int page, int spaces) {
+        if (page <= 0) {
             return false;
         }
 
@@ -42,12 +34,11 @@ public class PageUtil
         return items.size() > lowerBound;
     }
 
-    public static int getMaxPage(List<ItemStack> icons, int spaces)
-    {
+    public static int getMaxPage(List<ItemStack> icons, int spaces) {
         int maxPage = 1;
         do maxPage++;
         while (PageUtil.isPageValid(icons, maxPage, spaces));
-        return maxPage-1;
+        return maxPage - 1;
     }
 
 }

@@ -11,26 +11,27 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 
-public class PartyInventory
-{
+public class PartyInventory {
 
-    @Getter File file = new File(Practice.getInstance().getDataFolder() + "/inventories", "partyitems.yml");
+    @Getter
+    File file = new File(Practice.getInstance().getDataFolder() + "/inventories", "partyitems.yml");
     private final YamlConfiguration config;
 
-    @Getter private static ItemStack hostEventItem;
-    @Getter private static ItemStack infoItem;
-    @Getter private static ItemStack leaveItem;
+    @Getter
+    private static ItemStack hostEventItem;
+    @Getter
+    private static ItemStack infoItem;
+    @Getter
+    private static ItemStack leaveItem;
 
-    public PartyInventory()
-    {
+    public PartyInventory() {
         Bukkit.getPluginManager().registerEvents(new QueueInventoryListener(), Practice.getInstance());
         if (!file.exists()) Practice.getInstance().saveResource("inventories/partyitems.yml", false);
         config = YamlConfiguration.loadConfiguration(file);
         getInventory();
     }
 
-    public void getInventory()
-    {
+    public void getInventory() {
         hostEventItem = (ItemStack) config.get("host-event.item");
         ItemUtil.hideItemFlags(hostEventItem);
 
@@ -41,8 +42,7 @@ public class PartyInventory
         ItemUtil.hideItemFlags(leaveItem);
     }
 
-    public void setPartyInventory(Player player)
-    {
+    public void setPartyInventory(Player player) {
         player.getInventory().setItem(config.getInt("host-event.slot"), hostEventItem);
         player.getInventory().setItem(config.getInt("info.slot"), infoItem);
         player.getInventory().setItem(config.getInt("leave.slot"), leaveItem);

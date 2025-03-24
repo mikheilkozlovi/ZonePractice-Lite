@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 public class Ladder {
 
     private final int id;
@@ -58,8 +59,7 @@ public class Ladder {
             icon = config.getItemStack(iconPath);
 
         String armorPath = path + ".armor";
-        if (config.isSet(armorPath) && config.isString(armorPath))
-        {
+        if (config.isSet(armorPath) && config.isString(armorPath)) {
             try {
                 armor = ItemSerializationUtil.itemStackArrayFromBase64(config.getString(armorPath));
             } catch (IOException e) {
@@ -68,8 +68,7 @@ public class Ladder {
         }
 
         String inventoryPath = path + ".inventory";
-        if (config.isSet(inventoryPath) && config.isString(inventoryPath))
-        {
+        if (config.isSet(inventoryPath) && config.isString(inventoryPath)) {
             try {
                 inventory = ItemSerializationUtil.itemStackArrayFromBase64(config.getString(inventoryPath));
             } catch (IOException e) {
@@ -134,14 +133,12 @@ public class Ladder {
             config.set(iconPath, icon);
         }
 
-        if (armor != null)
-        {
+        if (armor != null) {
             String armorPath = path + ".armor";
             config.set(armorPath, ItemSerializationUtil.itemStackArrayToBase64(armor));
         }
 
-        if (inventory != null)
-        {
+        if (inventory != null) {
             String inventoryPath = path + ".inventory";
             config.set(inventoryPath, ItemSerializationUtil.itemStackArrayToBase64(inventory));
         }

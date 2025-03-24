@@ -9,23 +9,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerQuit implements Listener
-{
+public class PlayerQuit implements Listener {
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e)
-    {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Party party = Practice.getPartyManager().getParty(player);
 
-        if (party != null)
-        {
+        if (party != null) {
             party.removeMember(party, player, false);
         }
 
-        if (profile != null)
-        {
+        if (profile != null) {
             profile.setStatus(ProfileStatus.OFFLINE);
             profile.saveData();
         }

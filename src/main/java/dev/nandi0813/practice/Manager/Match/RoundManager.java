@@ -19,15 +19,15 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class RoundManager
-{
+public class RoundManager {
 
     private final Match match;
-    @Getter private final HashMap<TeamEnum, Integer> wonRoundsTeam = new HashMap<>();
-    @Getter private final HashMap<Player, Integer> wonRoundsPlayer = new HashMap<>();
+    @Getter
+    private final HashMap<TeamEnum, Integer> wonRoundsTeam = new HashMap<>();
+    @Getter
+    private final HashMap<Player, Integer> wonRoundsPlayer = new HashMap<>();
 
-    public RoundManager(Match match)
-    {
+    public RoundManager(Match match) {
         this.match = match;
     }
 
@@ -35,14 +35,12 @@ public class RoundManager
      * It sets the match status to START, starts the start countdown, sets the dropped items, sets the match player,
      * teleports the player, loads the kit, sets the hit delay, and adds the player to the alive players list
      */
-    public void startRound()
-    {
+    public void startRound() {
         match.setStatus(MatchStatus.START);
         match.getStartCountdown().begin();
         match.setDroppedItems(new HashSet<>());
 
-        for (Player player : match.getPlayers())
-        {
+        for (Player player : match.getPlayers()) {
             // Set players match attributions
             Bukkit.getScheduler().runTaskLater(Practice.getInstance(), () -> PlayerUtil.setMatchPlayer(player), 5L);
 
@@ -61,8 +59,7 @@ public class RoundManager
 
             if (profile.getCustomKits().get(match.getLadder()) == null || !player.hasPermission("zonepractice.customkit"))
                 KitUtil.loadKit(player, match.getLadder());
-            else
-            {
+            else {
                 player.getInventory().setItem(player.getInventory().firstEmpty(), ItemUtil.createItem("&a&lCustom Kit ", Material.ENCHANTED_BOOK));
                 player.getInventory().setItem(8, KitUtil.getDefaultKitItem());
             }
@@ -82,8 +79,7 @@ public class RoundManager
      *
      * @param winner The player who won the round.
      */
-    public void endRound(Player winner)
-    {
+    public void endRound(Player winner) {
         match.getDurationCountdown().cancel();
         match.getAlivePlayers().clear();
 
@@ -95,13 +91,17 @@ public class RoundManager
      *
      * @param winner The player who won the match.
      */
-    public void endMatch(Player winner)
-    {
-        switch (match.getType())
-        {
-            case DUEL: Duel.endMatch(match, winner, Duel.getOppositePlayer(match, winner)); break;
-            case PARTY_FFA: PartyFFA.endMatch(match, winner); break;
-            case PARTY_SPLIT: PartySplit.endMatch(match, winner); break;
+    public void endMatch(Player winner) {
+        switch (match.getType()) {
+            case DUEL:
+                Duel.endMatch(match, winner, Duel.getOppositePlayer(match, winner));
+                break;
+            case PARTY_FFA:
+                PartyFFA.endMatch(match, winner);
+                break;
+            case PARTY_SPLIT:
+                PartySplit.endMatch(match, winner);
+                break;
         }
 
         match.setStatus(MatchStatus.OLD);

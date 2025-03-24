@@ -11,19 +11,16 @@ public class QueueEndEvent extends Event {
     @Getter
     private final Queue queue;
 
-    public QueueEndEvent(Queue queue)
-    {
+    public QueueEndEvent(Queue queue) {
         this.queue = queue;
     }
 
     @Override
-    public HandlerList getHandlers()
-    {
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList()
-    {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

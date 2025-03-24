@@ -15,35 +15,28 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class MultiGameListener implements Listener
-{
+public class MultiGameListener implements Listener {
 
-    @EventHandler (priority = EventPriority.MONITOR)
-    public void onPlayerTeleport(PlayerTeleportEvent e)
-    {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
         World from = e.getFrom().getWorld();
         World to = e.getTo().getWorld();
 
-        if (ServerManager.getLobby() != null)
-        {
+        if (ServerManager.getLobby() != null) {
             World lobby = ServerManager.getLobby().getWorld();
             World arenas = Practice.getArenaManager().getArenasWorld();
 
-            if (ConfigManager.getBoolean("multi-game-support"))
-            {
-                if ((!from.equals(arenas) && !from.equals(lobby)) && to.equals(lobby))
-                {
+            if (ConfigManager.getBoolean("multi-game-support")) {
+                if ((!from.equals(arenas) && !from.equals(lobby)) && to.equals(lobby)) {
                     Bukkit.getServer().getScheduler().runTaskLater(Practice.getInstance(), () ->
                     {
                         Practice.getInventoryManager().getSpawnInventory().setInventory(player, true);
                         Practice.getSidebarManager().loadSidebar(player);
                     }, 2L);
-                }
-                else if (from.equals(lobby) && (!to.equals(arenas) && !to.equals(lobby)))
-                {
+                } else if (from.equals(lobby) && (!to.equals(arenas) && !to.equals(lobby))) {
                     player.getInventory().clear();
 
                     Party party = Practice.getPartyManager().getParty(player);
@@ -56,8 +49,7 @@ public class MultiGameListener implements Listener
                     Practice.getSidebarManager().unLoadSidebar(player);
                 }
             }
-        }
-        else if (player.isOp())
+        } else if (player.isOp())
             player.sendMessage(StringUtil.CC("&cPractice lobby location is not set yet!"));
     }
 

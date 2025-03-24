@@ -15,31 +15,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class ItemConsume implements Listener
-{
+public class ItemConsume implements Listener {
 
-    @EventHandler (ignoreCancelled = true)
-    public void onConsume(PlayerItemConsumeEvent e)
-    {
+    @EventHandler(ignoreCancelled = true)
+    public void onConsume(PlayerItemConsumeEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         ItemStack item = e.getItem();
 
-        if (profile.getStatus().equals(ProfileStatus.MATCH))
-        {
+        if (profile.getStatus().equals(ProfileStatus.MATCH)) {
             // Golden Head Listener
-            if (item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName())
-            {
-                if (ChatColor.stripColor(item.getItemMeta().getDisplayName()).contains(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ConfigManager.getString("match-settings.golden-head")))))
-                {
+            if (item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+                if (ChatColor.stripColor(item.getItemMeta().getDisplayName()).contains(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ConfigManager.getString("match-settings.golden-head"))))) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 90, 0), true);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 9, 1), true);
                 }
             }
 
             // Remove empty potion bottles listener
-            if (item != null && item.getType() == Material.POTION && ConfigManager.getConfig().getBoolean("match-settings.remove-empty-bottle"))
-            {
+            if (item != null && item.getType() == Material.POTION && ConfigManager.getConfig().getBoolean("match-settings.remove-empty-bottle")) {
                 Bukkit.getScheduler().runTaskLater(Practice.getInstance(), () -> player.getInventory().remove(Material.GLASS_BOTTLE), 1L);
             }
         }

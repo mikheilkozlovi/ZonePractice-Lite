@@ -7,15 +7,12 @@ import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class ArenasArg
-{
+public class ArenasArg {
 
-    public static void ArenasCommand(Player player)
-    {
+    public static void ArenasCommand(Player player) {
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-        if (profile.getStatus().equals(ProfileStatus.MATCH) || profile.getStatus().equals(ProfileStatus.SPECTATE))
-        {
+        if (profile.getStatus().equals(ProfileStatus.MATCH) || profile.getStatus().equals(ProfileStatus.SPECTATE)) {
             player.sendMessage(StringUtil.CC("&cYou can't use this, while you are in a match or spectating one."));
             return;
         }

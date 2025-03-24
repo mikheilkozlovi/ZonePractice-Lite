@@ -5,36 +5,32 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class DurationCountdown extends BukkitRunnable
-{
+public class DurationCountdown extends BukkitRunnable {
 
-    @Getter private int seconds;
-    @Getter private boolean running = false;
+    @Getter
+    private int seconds;
+    @Getter
+    private boolean running = false;
 
-    public DurationCountdown()
-    {
+    public DurationCountdown() {
         seconds = 0;
     }
 
-    public void begin()
-    {
+    public void begin() {
         running = true;
         this.runTaskTimerAsynchronously(Practice.getInstance(), 0, 20L);
     }
 
     @Override
-    public void cancel()
-    {
-        if (running)
-        {
+    public void cancel() {
+        if (running) {
             Bukkit.getScheduler().cancelTask(this.getTaskId());
             running = false;
         }
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
         seconds++;
     }
 

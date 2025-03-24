@@ -8,13 +8,10 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
 
-public class InventoryArg
-{
+public class InventoryArg {
 
-    public static void run(Player player, String label, String[] args)
-    {
-        if (args.length != 2)
-        {
+    public static void run(Player player, String label, String[] args) {
+        if (args.length != 2) {
             player.sendMessage(StringUtil.CC("&c/" + label + " setinv <ladder_id>/<ladder_name>"));
             return;
         }
@@ -25,14 +22,12 @@ public class InventoryArg
         else
             ladder = Practice.getLadderManager().getLadder(args[1]);
 
-        if (ladder == null)
-        {
+        if (ladder == null) {
             player.sendMessage(StringUtil.CC("&cInvalid ladder id or name."));
             return;
         }
 
-        if (ladder.isEnabled())
-        {
+        if (ladder.isEnabled()) {
             player.sendMessage(StringUtil.CC("&cYou can't edit an enabled ladder."));
             return;
         }

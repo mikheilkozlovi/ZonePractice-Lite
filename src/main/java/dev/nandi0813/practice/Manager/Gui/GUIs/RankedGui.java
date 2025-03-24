@@ -20,13 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RankedGui extends GUI
-{
+public class RankedGui extends GUI {
 
     private final Map<Integer, Ladder> ladderSlots = new HashMap<>();
 
-    public RankedGui()
-    {
+    public RankedGui() {
         super(GUIType.QUEUE_RANKED);
         this.gui.put(1, InventoryUtil.createInventory(LanguageManager.getString("gui.ranked.title"),
                 (int) Math.ceil(Practice.getLadderManager().getRankedLadders().size() / 9.)));
@@ -35,19 +33,16 @@ public class RankedGui extends GUI
     }
 
     @Override
-    public void build()
-    {
+    public void build() {
         update();
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         gui.get(1).clear();
         ladderSlots.clear();
 
-        for (Ladder ladder : Practice.getLadderManager().getRankedLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getRankedLadders()) {
             {
                 ItemStack icon = ladder.getIcon().clone();
                 ItemMeta iconMeta = icon.getItemMeta();
@@ -76,8 +71,7 @@ public class RankedGui extends GUI
     }
 
     @Override
-    public void handleClickEvent(InventoryClickEvent e)
-    {
+    public void handleClickEvent(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         InventoryView inventoryView = e.getView();
         ItemStack item = e.getCurrentItem();
@@ -90,8 +84,7 @@ public class RankedGui extends GUI
         if (!ladderSlots.containsKey(slot)) return;
         Ladder ladder = ladderSlots.get(slot);
 
-        if (!ladder.isEnabled())
-        {
+        if (!ladder.isEnabled()) {
             update();
             return;
         }

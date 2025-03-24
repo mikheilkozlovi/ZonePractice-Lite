@@ -13,47 +13,34 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class StatsCommand implements CommandExecutor
-{
+public class StatsCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-            if (!profile.getStatus().equals(ProfileStatus.OFFLINE))
-            {
-                if (!player.hasPermission("zonepractice.stats"))
-                {
+            if (!profile.getStatus().equals(ProfileStatus.OFFLINE)) {
+                if (!player.hasPermission("zonepractice.stats")) {
                     player.sendMessage(LanguageManager.getString("no-permission"));
                     return false;
                 }
 
-                if (!profile.getStatus().equals(ProfileStatus.MATCH))
-                {
-                    if (args.length == 0)
-                    {
+                if (!profile.getStatus().equals(ProfileStatus.MATCH)) {
+                    if (args.length == 0) {
                         new StatsGui(profile).open(player);
-                    }
-                    else if (args.length == 1)
-                    {
+                    } else if (args.length == 1) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                         Profile targetProfile = Practice.getProfileManager().getProfiles().get(target);
 
-                        if (targetProfile != null)
-                        {
+                        if (targetProfile != null) {
                             new StatsGui(targetProfile).open(player);
-                        }
-                        else
+                        } else
                             player.sendMessage(LanguageManager.getString("stats.player-not-found"));
-                    }
-                    else
+                    } else
                         player.sendMessage(StringUtil.CC("&c/" + label + " <player>"));
-                }
-                else
+                } else
                     player.sendMessage(LanguageManager.getString("stats.cant-use"));
             }
 

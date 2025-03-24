@@ -6,13 +6,10 @@ import dev.nandi0813.practice.Util.InventoryUtil;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class InfoArg
-{
+public class InfoArg {
 
-    public static void run(Player player, String label, String[] args)
-    {
-        if (args.length != 2)
-        {
+    public static void run(Player player, String label, String[] args) {
+        if (args.length != 2) {
             player.sendMessage(StringUtil.CC("&c/" + label + " info <ladder_id>/<ladder_name>"));
             return;
         }
@@ -23,8 +20,7 @@ public class InfoArg
         else
             ladder = Practice.getLadderManager().getLadder(args[1]);
 
-        if (ladder == null)
-        {
+        if (ladder == null) {
             player.sendMessage(StringUtil.CC("&cInvalid ladder id or name."));
             return;
         }

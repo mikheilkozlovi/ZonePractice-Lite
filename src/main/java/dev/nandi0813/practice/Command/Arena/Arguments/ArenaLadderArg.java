@@ -9,23 +9,17 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ArenaLadderArg
-{
+public class ArenaLadderArg {
 
-    public static void LadderCommand(Player player, String label, String[] args)
-    {
+    public static void LadderCommand(Player player, String label, String[] args) {
 
-        if (args.length == 3 || args.length == 4)
-        {
-            if (args[1].equalsIgnoreCase("list"))
-            {
-                if (args.length == 3)
-                {
+        if (args.length == 3 || args.length == 4) {
+            if (args[1].equalsIgnoreCase("list")) {
+                if (args.length == 3) {
                     String arenaName = args[2];
                     Arena arena = Practice.getArenaManager().getArena(arenaName);
 
-                    if (arena != null)
-                    {
+                    if (arena != null) {
                         List<String> ladderNames = ArenaUtil.getLadderNames(arena);
 
                         player.sendMessage(StringUtil.CC("&7&m-----------------------------------"));
@@ -38,28 +32,19 @@ public class ArenaLadderArg
                             player.sendMessage(StringUtil.CC(" &b" + ladderNames.toString().replace("[", "").replace("]", "")));
 
                         player.sendMessage(StringUtil.CC("&7&m-----------------------------------"));
-                    }
-                    else
-                    {
+                    } else {
                         player.sendMessage(StringUtil.CC("&c" + arenaName + " arena doesn't exists."));
                     }
-                }
-                else
-                {
+                } else {
                     player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder list <name>"));
                 }
-            }
-            else if (args[1].equalsIgnoreCase("add"))
-            {
-                if (args.length == 4)
-                {
+            } else if (args[1].equalsIgnoreCase("add")) {
+                if (args.length == 4) {
                     String arenaName = args[2];
                     Arena arena = Practice.getArenaManager().getArena(arenaName);
 
-                    if (arena != null)
-                    {
-                        if (arena.isEnabled())
-                        {
+                    if (arena != null) {
+                        if (arena.isEnabled()) {
                             player.sendMessage(StringUtil.CC("&cYou can't edit a enabled arena."));
                             return;
                         }
@@ -67,48 +52,32 @@ public class ArenaLadderArg
                         String ladderName = args[3];
                         Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
 
-                        if (ladder != null)
-                        {
-                            if ((arena.isBuild() && ladder.isBuild()) || (!arena.isBuild() && !ladder.isBuild()))
-                            {
-                                if (!arena.getLadders().contains(ladder))
-                                {
+                        if (ladder != null) {
+                            if ((arena.isBuild() && ladder.isBuild()) || (!arena.isBuild() && !ladder.isBuild())) {
+                                if (!arena.getLadders().contains(ladder)) {
                                     arena.getLadders().add(ladder);
                                     arena.saveData();
                                     player.sendMessage(StringUtil.CC("&aYou added &e" + ladder.getName() + " ladder &afor arena &6" + arena.getName() + "&a."));
-                                }
-                                else
-                                {
+                                } else {
                                     player.sendMessage(StringUtil.CC("&c" + ladder.getName() + " ladder is already added for arena " + arena.getName()));
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 player.sendMessage(StringUtil.CC("&cYou can't add build ladders to non-build arenas and vice versa."));
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         player.sendMessage(StringUtil.CC("&c" + arenaName + " arena doesn't exists."));
                     }
-                }
-                else
-                {
+                } else {
                     player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder add <name> <ladder>"));
                 }
-            }
-            else if (args[1].equalsIgnoreCase("remove"))
-            {
-                if (args.length == 4)
-                {
+            } else if (args[1].equalsIgnoreCase("remove")) {
+                if (args.length == 4) {
                     String arenaName = args[2];
                     Arena arena = Practice.getArenaManager().getArena(arenaName);
 
-                    if (arena != null)
-                    {
-                        if (arena.isEnabled())
-                        {
+                    if (arena != null) {
+                        if (arena.isEnabled()) {
                             player.sendMessage(StringUtil.CC("&cYou can't edit a enabled arena."));
                             return;
                         }
@@ -116,42 +85,28 @@ public class ArenaLadderArg
                         String ladderName = args[3];
                         Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
 
-                        if (ladder != null)
-                        {
-                            if (arena.getLadders().contains(ladder))
-                            {
+                        if (ladder != null) {
+                            if (arena.getLadders().contains(ladder)) {
                                 arena.getLadders().remove(ladder);
                                 arena.saveData();
                                 player.sendMessage(StringUtil.CC("&aYou removed &e" + ladder.getName() + " ladder &afrom arena &6" + arena.getName() + "&a."));
-                            }
-                            else
-                            {
+                            } else {
                                 player.sendMessage(StringUtil.CC("&c" + ladder.getName() + " ladder isn't added for arena " + arena.getName()));
                             }
-                        }
-                        else
-                        {
+                        } else {
                             player.sendMessage(StringUtil.CC("&c" + ladderName + " ladder doesn't exists."));
                         }
-                    }
-                    else
-                    {
+                    } else {
                         player.sendMessage(StringUtil.CC("&c" + arenaName + " arena doesn't exists."));
                     }
-                }
-                else
-                {
+                } else {
                     player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder remove <name> <ladder>"));
                 }
-            }
-            else
-            {
+            } else {
                 player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder list <name>"));
                 player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder <add/remove> <name> <ladder>"));
             }
-        }
-        else
-        {
+        } else {
             player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder list <name>"));
             player.sendMessage(StringUtil.CC(" &c » /" + label + " ladder <add/remove> <name> <ladder>"));
         }

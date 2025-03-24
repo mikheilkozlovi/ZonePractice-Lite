@@ -9,16 +9,18 @@ import dev.nandi0813.practice.Practice;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
-public class InventoryManager
-{
+public class InventoryManager {
 
-    @Getter private final SpawnInventory spawnInventory;
-    @Getter private final QueueInventory queueInventory;
-    @Getter private final SpectatorInventory spectatorInventory;
-    @Getter private final PartyInventory partyInventory;
+    @Getter
+    private final SpawnInventory spawnInventory;
+    @Getter
+    private final QueueInventory queueInventory;
+    @Getter
+    private final SpectatorInventory spectatorInventory;
+    @Getter
+    private final PartyInventory partyInventory;
 
-    public InventoryManager()
-    {
+    public InventoryManager() {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), Practice.getInstance());
         Bukkit.getPluginManager().registerEvents(new PartyInventoryListener(), Practice.getInstance());
 

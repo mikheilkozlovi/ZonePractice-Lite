@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class LadderFile
-{
+public class LadderFile {
 
     private static File file;
-    @Getter private static FileConfiguration config;
+    @Getter
+    private static FileConfiguration config;
 
-    public static void createFile(Practice practice)
-    {
+    public static void createFile(Practice practice) {
         file = new File(practice.getDataFolder(), "ladders.yml");
         if (!file.exists())
             practice.saveResource("ladders.yml", false);
@@ -29,8 +28,7 @@ public class LadderFile
         reload();
     }
 
-    public static void save()
-    {
+    public static void save() {
         try {
             config.save(file);
         } catch (IOException e) {
@@ -38,8 +36,7 @@ public class LadderFile
         }
     }
 
-    public static void reload()
-    {
+    public static void reload() {
         try {
             config.load(file);
         } catch (IOException | InvalidConfigurationException e) {
@@ -47,14 +44,28 @@ public class LadderFile
         }
     }
 
-    public static String getString(String loc)
-    {
+    public static String getString(String loc) {
         return StringUtil.CC(config.getString(loc));
     }
-    public static boolean getBoolean(String loc) { return config.getBoolean(loc); }
-    public static int getInt(String loc) { return config.getInt(loc); }
-    public static double getDouble(String loc) { return config.getDouble(loc); }
-    public static Set<String> getConfigSectionKeys(String loc) { return Objects.requireNonNull(config.getConfigurationSection(loc)).getKeys(false); }
-    public static List<String> getList(String loc) { return StringUtil.CC(config.getStringList(loc)); }
+
+    public static boolean getBoolean(String loc) {
+        return config.getBoolean(loc);
+    }
+
+    public static int getInt(String loc) {
+        return config.getInt(loc);
+    }
+
+    public static double getDouble(String loc) {
+        return config.getDouble(loc);
+    }
+
+    public static Set<String> getConfigSectionKeys(String loc) {
+        return Objects.requireNonNull(config.getConfigurationSection(loc)).getKeys(false);
+    }
+
+    public static List<String> getList(String loc) {
+        return StringUtil.CC(config.getStringList(loc));
+    }
 
 }

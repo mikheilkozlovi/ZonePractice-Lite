@@ -25,38 +25,29 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.Collections;
 import java.util.List;
 
-public class PartySplitListener implements Listener
-{
+public class PartySplitListener implements Listener {
 
-    @EventHandler (ignoreCancelled = true)
-    public void onPlayerDamage(EntityDamageEvent e)
-    {
-        if (e.getEntity() instanceof Player)
-        {
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
             Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
 
-            if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT))
-            {
-                if (match.getStatus().equals(MatchStatus.LIVE) && match.getAlivePlayers().contains(player))
-                {
-                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID))
-                    {
+            if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT)) {
+                if (match.getStatus().equals(MatchStatus.LIVE) && match.getAlivePlayers().contains(player)) {
+                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
                         e.setCancelled(true);
                         PartySplit.killPlayer(match, player, true);
                     }
 
-                    if (player.getHealth() - e.getFinalDamage() <= 0)
-                    {
+                    if (player.getHealth() - e.getFinalDamage() <= 0) {
                         if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))
                             e.setCancelled(true);
 
                         PartySplit.killPlayer(match, player, true);
                     }
-                }
-                else
-                {
+                } else {
                     e.setCancelled(true);
                 }
             }
@@ -64,24 +55,19 @@ public class PartySplitListener implements Listener
     }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent e)
-    {
+    public void onDamage(EntityDamageByEntityEvent e) {
         if (ConfigManager.getBoolean("match-settings.party.split-team-damage")) return;
 
-        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player)
-        {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player attacker = (Player) e.getDamager();
             Profile attackerProfile = Practice.getProfileManager().getProfiles().get(attacker);
             Player target = (Player) e.getEntity();
             Profile targetProfile = Practice.getProfileManager().getProfiles().get(target);
 
-            if (attackerProfile.getStatus().equals(ProfileStatus.MATCH) && targetProfile.getStatus().equals(ProfileStatus.MATCH))
-            {
+            if (attackerProfile.getStatus().equals(ProfileStatus.MATCH) && targetProfile.getStatus().equals(ProfileStatus.MATCH)) {
                 Match match = Practice.getMatchManager().getLiveMatchByPlayer(attacker);
-                if (match.getType().equals(MatchType.PARTY_SPLIT) && match.equals(Practice.getMatchManager().getLiveMatchByPlayer(target)))
-                {
-                    if (match.getTeams().get(attacker).equals(match.getTeams().get(target)))
-                    {
+                if (match.getType().equals(MatchType.PARTY_SPLIT) && match.equals(Practice.getMatchManager().getLiveMatchByPlayer(target))) {
+                    if (match.getTeams().get(attacker).equals(match.getTeams().get(target))) {
                         e.setCancelled(true);
                     }
                 }
@@ -89,15 +75,13 @@ public class PartySplitListener implements Listener
         }
     }
 
-    @EventHandler (ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent e)
-    {
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
 
-        if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT))
-        {
+        if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT)) {
             match.sendMessage(LanguageManager.getString("match.partysplit.player-left").replaceAll("%player%", player.getName()), true);
 
             match.removePlayer(player, false);
@@ -110,27 +94,20 @@ public class PartySplitListener implements Listener
             match.getTeams().remove(player);
             team1Players.remove(player);
 
-            if (match.getPlayers().size() < 2)
-            {
-                for (Player winner : match.getPlayers())
-                {
+            if (match.getPlayers().size() < 2) {
+                for (Player winner : match.getPlayers()) {
                     match.getRoundManager().endMatch(winner);
                     return;
                 }
-            }
-            else if (PartySplit.getTeamAlivePlayers(match, TeamEnum.TEAM1).isEmpty())
-            {
+            } else if (PartySplit.getTeamAlivePlayers(match, TeamEnum.TEAM1).isEmpty()) {
                 match.getRoundManager().endRound(match.getAlivePlayers().stream().findAny().get());
             }
 
             // Team equalizer
-            if (match.getAfterCountdown().isRunning())
-            {
-                if (team1Players.size() + 1 < team2Players.size())
-                {
+            if (match.getAfterCountdown().isRunning()) {
+                if (team1Players.size() + 1 < team2Players.size()) {
                     Collections.shuffle(team2Players);
-                    for (Player team2Player : team2Players)
-                    {
+                    for (Player team2Player : team2Players) {
                         match.getTeams().put(team2Player, team1);
                         match.sendMessage(LanguageManager.getString("match.partysplit.player-team-move").replaceAll("%player%", team2Player.getName()).replaceAll("%oldTeam%", TeamUtil.getOppositeTeam(team1).getName()).replaceAll("%newTeam%", team1.getName()), true);
                         return;
@@ -142,8 +119,7 @@ public class PartySplitListener implements Listener
 
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e)
-    {
+    public void onBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
@@ -153,8 +129,7 @@ public class PartySplitListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerPickItem(PlayerPickupItemEvent e)
-    {
+    public void onPlayerPickItem(PlayerPickupItemEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
@@ -164,8 +139,7 @@ public class PartySplitListener implements Listener
     }
 
     @EventHandler
-    public void onHunger(FoodLevelChangeEvent e)
-    {
+    public void onHunger(FoodLevelChangeEvent e) {
         Player player = (Player) e.getEntity();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
@@ -175,10 +149,8 @@ public class PartySplitListener implements Listener
     }
 
     @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
-    {
-        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player)
-        {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
             Player player = (Player) e.getDamager();
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
             Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
@@ -189,14 +161,12 @@ public class PartySplitListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e)
-    {
+    public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
 
-        if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT) && !match.getAlivePlayers().contains(player))
-        {
+        if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT) && !match.getAlivePlayers().contains(player)) {
             Cuboid cuboid = match.getGameArena().getCuboid();
 
             if (!cuboid.contains(e.getTo()))

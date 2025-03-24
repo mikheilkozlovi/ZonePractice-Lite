@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class LadderManager
-{
+public class LadderManager {
 
     private final List<Ladder> ladders = new ArrayList<>();
     private final List<Ladder> unrankedLadders = new ArrayList<>();
@@ -23,16 +22,14 @@ public class LadderManager
      * @param ladderName The name of the ladder you want to get.
      * @return A ladder object
      */
-    public Ladder getLadder(String ladderName)
-    {
+    public Ladder getLadder(String ladderName) {
         for (Ladder ladder : ladders)
             if (ladder.getName() != null && ladder.getName().equalsIgnoreCase(ladderName))
                 return ladder;
         return null;
     }
 
-    public Ladder getLadder(int id)
-    {
+    public Ladder getLadder(int id) {
         for (Ladder ladder : ladders)
             if (ladder.getId() == id)
                 return ladder;
@@ -66,8 +63,7 @@ public class LadderManager
         });
     }
 
-    public void saveLadders()
-    {
+    public void saveLadders() {
         for (Ladder ladder : ladders)
             ladder.saveData(false);
 

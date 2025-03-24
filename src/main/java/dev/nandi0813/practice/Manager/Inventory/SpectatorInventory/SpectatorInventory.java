@@ -12,30 +12,28 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 
-public class SpectatorInventory
-{
+public class SpectatorInventory {
 
-    @Getter File file = new File(Practice.getInstance().getDataFolder() + "/inventories", "spectatoritems.yml");
+    @Getter
+    File file = new File(Practice.getInstance().getDataFolder() + "/inventories", "spectatoritems.yml");
     private final YamlConfiguration config;
 
-    @Getter private static ItemStack leaveItemSpectate;
+    @Getter
+    private static ItemStack leaveItemSpectate;
 
 
-    public SpectatorInventory()
-    {
+    public SpectatorInventory() {
         if (!file.exists()) Practice.getInstance().saveResource("inventories/spectatoritems.yml", false);
         config = YamlConfiguration.loadConfiguration(file);
         getInventory();
     }
 
-    public void getInventory()
-    {
+    public void getInventory() {
         leaveItemSpectate = (ItemStack) config.get("spectate.leave.item");
         ItemUtil.hideItemFlags(leaveItemSpectate);
     }
 
-    public void setSpectatorInventory(Player player)
-    {
+    public void setSpectatorInventory(Player player) {
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         profile.setStatus(ProfileStatus.SPECTATE);
 

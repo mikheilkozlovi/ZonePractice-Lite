@@ -17,17 +17,20 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-public class MatchManager
-{
+public class MatchManager {
 
-    @Getter private final Map<String, Match> matches = new HashMap<>();
-    @Getter private final List<Match> liveMatches = new ArrayList<>();
+    @Getter
+    private final Map<String, Match> matches = new HashMap<>();
+    @Getter
+    private final List<Match> liveMatches = new ArrayList<>();
 
-    @Getter @Setter private Map<Player, Integer> rankedPerDay = new HashMap<>();
-    @Getter private final Map<Player, Integer> allowedRankedPerDay = new HashMap<>();
+    @Getter
+    @Setter
+    private Map<Player, Integer> rankedPerDay = new HashMap<>();
+    @Getter
+    private final Map<Player, Integer> allowedRankedPerDay = new HashMap<>();
 
-    public MatchManager(Practice practice)
-    {
+    public MatchManager(Practice practice) {
         Bukkit.getPluginManager().registerEvents(new MatchListener(), practice);
         Bukkit.getPluginManager().registerEvents(new SpectatorListener(), practice);
         Bukkit.getPluginManager().registerEvents(new MatchStatListener(practice), practice);
@@ -37,29 +40,25 @@ public class MatchManager
         Bukkit.getPluginManager().registerEvents(new PartySplitListener(), practice);
     }
 
-    public Match getLiveMatchByPlayer(Player player)
-    {
+    public Match getLiveMatchByPlayer(Player player) {
         for (Match match : liveMatches)
             if (match.getPlayers().contains(player)) return match;
         return null;
     }
 
-    public Match getLiveMatchBySpectator(Player spectator)
-    {
+    public Match getLiveMatchBySpectator(Player spectator) {
         for (Match match : liveMatches)
             if (match.getSpectators().contains(spectator)) return match;
         return null;
     }
 
-    public Match getLiveMatchByArena(Arena arena)
-    {
+    public Match getLiveMatchByArena(Arena arena) {
         for (Match match : liveMatches)
             if (match.getArena().equals(arena)) return match;
         return null;
     }
 
-    public List<Match> getLiveMatchByLadder(Ladder ladder)
-    {
+    public List<Match> getLiveMatchByLadder(Ladder ladder) {
         List<Match> list = new ArrayList<>();
         for (Match match : liveMatches)
             if (match.getLadder().equals(ladder))
@@ -67,42 +66,35 @@ public class MatchManager
         return list;
     }
 
-    public int getDuelMatchSize(Ladder ladder, boolean ranked)
-    {
+    public int getDuelMatchSize(Ladder ladder, boolean ranked) {
         int size = 0;
-        for (Match match : liveMatches)
-        {
-            if (match.getLadder().equals(ladder))
-            {
+        for (Match match : liveMatches) {
+            if (match.getLadder().equals(ladder)) {
                 if (match.isRanked() == ranked) size++;
             }
         }
         return size * 2;
     }
 
-    public int getMatchSize()
-    {
+    public int getMatchSize() {
         int size = 0;
-        for (Match match : liveMatches)
-        {
+        for (Match match : liveMatches) {
             size = size + match.getPlayers().size();
         }
         return size;
     }
 
-    public void disableLiveMatches()
-    {
+    public void disableLiveMatches() {
         for (Match match : liveMatches)
             match.endMatch();
     }
 
 
-    public void startRankedTimer()
-    {
+    public void startRankedTimer() {
         ZonedDateTime zdt = LocalDate.now(TimeZone.getDefault().toZoneId()).atTime(LocalTime.of(23, 59, 59)).atZone(TimeZone.getDefault().toZoneId());
 
-        long i2 = zdt.toInstant().toEpochMilli()-System.currentTimeMillis();
-        long i3 = (i2/1000)*20;
+        long i2 = zdt.toInstant().toEpochMilli() - System.currentTimeMillis();
+        long i3 = (i2 / 1000) * 20;
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Practice.getInstance(), () ->
         {

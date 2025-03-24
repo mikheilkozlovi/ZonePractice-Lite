@@ -10,15 +10,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class ArenaFile
-{
+public class ArenaFile {
 
     private final Arena arena;
-    @Getter private final File file;
+    @Getter
+    private final File file;
     private final YamlConfiguration config;
 
-    public ArenaFile(Arena arena)
-    {
+    public ArenaFile(Arena arena) {
         this.arena = arena;
 
         file = new File(Practice.getInstance().getDataFolder() + "/arenas", arena.getName().toLowerCase() + ".yml");
@@ -29,8 +28,7 @@ public class ArenaFile
      * It saves the arena's name, build status, enabled status, ladder names, and corner and position locations to the
      * config file
      */
-    public void setData()
-    {
+    public void setData() {
         config.set("name", arena.getName());
         config.set("build", arena.isBuild());
         config.set("enabled", arena.isEnabled());
@@ -46,12 +44,10 @@ public class ArenaFile
     /**
      * It loads the data from the config file into the arena object
      */
-    public void getData()
-    {
+    public void getData() {
         arena.setBuild(config.getBoolean("build"));
         arena.setEnabled(config.getBoolean("enabled"));
-        for (String ladderName : config.getStringList("ladders"))
-        {
+        for (String ladderName : config.getStringList("ladders")) {
             Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
             if (ladder != null) arena.getLadders().add(ladder);
         }
@@ -62,8 +58,7 @@ public class ArenaFile
         if (config.get("position.3") != null) arena.setPosition3((Location) config.get("position.3"));
     }
 
-    public void saveFile()
-    {
+    public void saveFile() {
         try {
             config.save(file);
         } catch (IOException e) {

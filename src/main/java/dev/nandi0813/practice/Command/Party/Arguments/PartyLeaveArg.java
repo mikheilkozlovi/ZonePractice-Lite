@@ -6,28 +6,20 @@ import dev.nandi0813.practice.Practice;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class PartyLeaveArg
-{
+public class PartyLeaveArg {
 
-    public static void LeaveCommand(Player player, String label, String[] args)
-    {
-        if (args.length == 1)
-        {
+    public static void LeaveCommand(Player player, String label, String[] args) {
+        if (args.length == 1) {
             Party party = Practice.getPartyManager().getParty(player);
 
-            if (party != null)
-            {
-                if (party.getMatch() == null)
-                {
+            if (party != null) {
+                if (party.getMatch() == null) {
                     party.removeMember(party, player, false);
-                }
-                else
+                } else
                     player.sendMessage(LanguageManager.getString("party.cant-leave-inmatch"));
-            }
-            else
+            } else
                 player.sendMessage(LanguageManager.getString("party.not-member"));
-        }
-        else
+        } else
             player.sendMessage(StringUtil.CC("&c/" + label + " leave"));
     }
 

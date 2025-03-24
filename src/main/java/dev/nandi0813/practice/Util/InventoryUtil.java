@@ -11,13 +11,11 @@ import java.util.List;
 
 public class InventoryUtil {
 
-    public static Inventory createInventory(String title, int row)
-    {
+    public static Inventory createInventory(String title, int row) {
         return Bukkit.getServer().createInventory(null, row * 9, StringUtil.CC(title));
     }
 
-    public static List<String> getPotionEffectNames(List<PotionEffect> effects)
-    {
+    public static List<String> getPotionEffectNames(List<PotionEffect> effects) {
         List<String> names = new ArrayList<>();
         for (PotionEffect potionEffect : effects)
             names.add(potionEffect.getType().getName());

@@ -21,13 +21,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MatchStatsGui extends GUI
-{
+public class MatchStatsGui extends GUI {
 
     private final PlayerMatchStat matchStat;
 
-    public MatchStatsGui(PlayerMatchStat matchStat)
-    {
+    public MatchStatsGui(PlayerMatchStat matchStat) {
         super(GUIType.MATCH_STATS);
 
         this.matchStat = matchStat;
@@ -37,14 +35,12 @@ public class MatchStatsGui extends GUI
     }
 
     @Override
-    public void build()
-    {
+    public void build() {
         Bukkit.getScheduler().runTaskAsynchronously(Practice.getInstance(), this::update);
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         gui.get(1).clear();
         DecimalFormat df = new DecimalFormat("0.0");
 
@@ -52,8 +48,7 @@ public class MatchStatsGui extends GUI
 
         List<ItemStack> armor = Arrays.asList(matchStat.getEndArmor());
         Collections.reverse(armor);
-        for (int i = 36; i <= 39; i++)
-        {
+        for (int i = 36; i <= 39; i++) {
             gui.get(1).setItem(i, armor.get(i - 36));
         }
 
@@ -64,8 +59,7 @@ public class MatchStatsGui extends GUI
         gui.get(1).setItem(46, hungerItem);
 
         List<String> statsItemLore = new ArrayList<>();
-        for (String line : LanguageManager.getList("gui.end-match-inventory.player-stats-item.lore"))
-        {
+        for (String line : LanguageManager.getList("gui.end-match-inventory.player-stats-item.lore")) {
             statsItemLore.add(line
                     .replaceAll("%hits%", String.valueOf(matchStat.getHit()))
                     .replaceAll("%getHit%", String.valueOf(matchStat.getGetHit()))
@@ -76,12 +70,11 @@ public class MatchStatsGui extends GUI
         gui.get(1).setItem(47, statsItem);
 
         List<String> potionItemLore = new ArrayList<>();
-        for (PotionEffect pe : matchStat.getEndPotionEffects())
-        {
+        for (PotionEffect pe : matchStat.getEndPotionEffects()) {
             potionItemLore.add(LanguageManager.getString("gui.end-match-inventory.effects-item.effect-line")
                     .replaceAll("%effectName%", getPotionEffectNormalName(pe.getType().getName()))
                     .replaceAll("%effectAmplifier%", String.valueOf((pe.getAmplifier() + 1)))
-                    .replaceAll("%timeLeft%", StringUtil.formatMillisecondsToMinutes((pe.getDuration()/20)* 1000L)));
+                    .replaceAll("%timeLeft%", StringUtil.formatMillisecondsToMinutes((pe.getDuration() / 20) * 1000L)));
         }
         ItemStack potionItem = ItemUtil.createItem(LanguageManager.getString("gui.end-match-inventory.effects-item.name"), Material.POTION, potionItemLore);
         gui.get(1).setItem(48, potionItem);
@@ -90,13 +83,11 @@ public class MatchStatsGui extends GUI
     }
 
     @Override
-    public void handleClickEvent(InventoryClickEvent e)
-    {
+    public void handleClickEvent(InventoryClickEvent e) {
         e.setCancelled(true);
     }
 
-    public static String getPotionEffectNormalName(String base)
-    {
+    public static String getPotionEffectNormalName(String base) {
         return WordUtils.capitalize(base.replaceAll("_", "").toLowerCase());
     }
 

@@ -7,8 +7,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class TPSUtil
-{
+public class TPSUtil {
 
     private static Object minecraftServer;
     private static Field recentTps;
@@ -17,12 +16,9 @@ public class TPSUtil
         return round(getRecentTPS()[0]);
     }
 
-    public static double[] getRecentTPS()
-    {
-        try
-        {
-            if (minecraftServer == null)
-            {
+    public static double[] getRecentTPS() {
+        try {
+            if (minecraftServer == null) {
                 Server server = Bukkit.getServer();
                 Field consoleField = server.getClass().getDeclaredField("console");
                 consoleField.setAccessible(true);
@@ -35,13 +31,12 @@ public class TPSUtil
             }
 
             return (double[]) recentTps.get(minecraftServer);
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
         }
-        catch (IllegalAccessException | NoSuchFieldException ignored) {}
-        return new double[] {20, 20, 20};
+        return new double[]{20, 20, 20};
     }
 
-    public static double round(double value)
-    {
+    public static double round(double value) {
         if (value > 20.0)
             return 20.0;
 

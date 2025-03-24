@@ -9,16 +9,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class ServerManager
-{
+public class ServerManager {
 
     /**
      * It sets the lobby location to the location passed in
      *
      * @param lobbyLocation The location of the lobby
      */
-    public static void setLobby(Location lobbyLocation)
-    {
+    public static void setLobby(Location lobbyLocation) {
         BackendManager.getConfig().set("lobby", lobbyLocation);
         BackendManager.save();
     }
@@ -28,8 +26,7 @@ public class ServerManager
      *
      * @return The lobby location
      */
-    public static Location getLobby()
-    {
+    public static Location getLobby() {
         if (BackendManager.getConfig().get("lobby") != null) return (Location) BackendManager.getConfig().get("lobby");
         else return null;
     }

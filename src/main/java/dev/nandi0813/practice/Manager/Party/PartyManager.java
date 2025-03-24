@@ -12,13 +12,12 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartyManager
-{
+public class PartyManager {
 
-    @Getter private final List<Party> parties = new ArrayList<>();
+    @Getter
+    private final List<Party> parties = new ArrayList<>();
 
-    public PartyManager()
-    {
+    public PartyManager() {
         Bukkit.getPluginManager().registerEvents(new PartyListener(), Practice.getInstance());
     }
 
@@ -28,8 +27,7 @@ public class PartyManager
      * @param player The player you want to get the party of.
      * @return The party that the player is in.
      */
-    public Party getParty(Player player)
-    {
+    public Party getParty(Player player) {
         for (Party party : parties)
             if (party.getMembers().contains(player))
                 return party;
@@ -42,8 +40,7 @@ public class PartyManager
      * @param match The match you want to get the party from.
      * @return The party that is associated with the match.
      */
-    public Party getParty(Match match)
-    {
+    public Party getParty(Match match) {
         for (Party party : parties)
             if (party.getMatch() != null && party.getMatch().equals(match))
                 return party;
@@ -55,16 +52,12 @@ public class PartyManager
      *
      * @param player The player who is creating the party.
      */
-    public void createParty(Player player)
-    {
+    public void createParty(Player player) {
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-        if (Practice.getPartyManager().getParty(player) == null)
-        {
-            if (profile.getStatus().equals(ProfileStatus.LOBBY))
-            {
-                if (player.hasPermission("zonepractice.party.create"))
-                {
+        if (Practice.getPartyManager().getParty(player) == null) {
+            if (profile.getStatus().equals(ProfileStatus.LOBBY)) {
+                if (player.hasPermission("zonepractice.party.create")) {
                     Party party = new Party(player);
                     parties.add(party);
                     profile.setParty(true);
@@ -72,14 +65,11 @@ public class PartyManager
                     Practice.getInventoryManager().getSpawnInventory().setInventory(player, false);
 
                     player.sendMessage(LanguageManager.getString("party.create"));
-                }
-                else
+                } else
                     player.sendMessage(LanguageManager.getString("no-permission"));
-            }
-            else
+            } else
                 player.sendMessage(LanguageManager.getString("party.cant-create"));
-        }
-        else
+        } else
             player.sendMessage(LanguageManager.getString("party.already-member"));
     }
 

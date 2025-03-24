@@ -7,58 +7,43 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class PAPIExpansion extends PlaceholderExpansion
-{
+public class PAPIExpansion extends PlaceholderExpansion {
 
     @Override
-    public boolean canRegister()
-    {
+    public boolean canRegister() {
         return true;
     }
 
     @Override
-    public @NotNull String getIdentifier()
-    {
+    public @NotNull String getIdentifier() {
         return "zonepracticelite";
     }
 
     @Override
-    public @NotNull String getAuthor()
-    {
+    public @NotNull String getAuthor() {
         return "Nandi0813";
     }
 
     @Override
-    public @NotNull String getVersion()
-    {
+    public @NotNull String getVersion() {
         return "1.0";
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, @NotNull String identifier)
-    {
+    public String onPlaceholderRequest(Player player, @NotNull String identifier) {
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-        if (profile != null)
-        {
-            for (Ladder ladder : Practice.getLadderManager().getLadders())
-            {
+        if (profile != null) {
+            for (Ladder ladder : Practice.getLadderManager().getLadders()) {
                 String ladderName = ladder.getName().toLowerCase();
 
-                if (identifier.equals("wins_unranked_" + ladderName))
-                {
+                if (identifier.equals("wins_unranked_" + ladderName)) {
                     return String.valueOf(profile.getLadderUnRankedWins().get(ladder));
-                }
-                else if (identifier.equals("loses_unranked_" + ladderName))
-                {
+                } else if (identifier.equals("loses_unranked_" + ladderName)) {
                     return String.valueOf(profile.getLadderUnRankedLosses().get(ladder));
-                }
-                else if (identifier.equals("wins_ranked_" + ladderName))
-                {
+                } else if (identifier.equals("wins_ranked_" + ladderName)) {
                     return String.valueOf(profile.getLadderRankedWins().get(ladder));
-                }
-                else if (identifier.equals("loses_ranked_" + ladderName))
-                {
+                } else if (identifier.equals("loses_ranked_" + ladderName)) {
                     return String.valueOf(profile.getLadderRankedLosses().get(ladder));
                 }
             }

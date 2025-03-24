@@ -9,8 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class ItemSerializationUtil
-{
+public class ItemSerializationUtil {
 
     public static String itemStackArrayToBase64(ItemStack[] items) throws IllegalStateException {
         try {
