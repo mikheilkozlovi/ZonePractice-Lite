@@ -4,6 +4,7 @@ import dev.nandi0813.practice.Manager.File.LadderFile;
 import dev.nandi0813.practice.Util.ItemSerializationUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -13,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
-public class Ladder
-{
+public class Ladder {
 
     private final int id;
     private String name = null;
@@ -38,8 +38,7 @@ public class Ladder
         getData();
     }
 
-    public void getData()
-    {
+    public void getData() {
         FileConfiguration config = LadderFile.getConfig();
         String path = "ladders.ladder" + id;
 
@@ -114,18 +113,15 @@ public class Ladder
             enabled = false;
     }
 
-    public boolean isReadyToEnable()
-    {
+    public boolean isReadyToEnable() {
         return name != null && icon != null && armor != null && inventory != null && knockbackType != null;
     }
 
-    public void saveData(boolean saveFile)
-    {
+    public void saveData(boolean saveFile) {
         FileConfiguration config = LadderFile.getConfig();
         String path = "ladders.ladder" + id;
 
-        if (name != null)
-        {
+        if (name != null) {
             String namePath = path + ".name";
             config.set(namePath, name);
         }
@@ -133,8 +129,7 @@ public class Ladder
         String enabledPath = path + ".enabled";
         config.set(enabledPath, enabled);
 
-        if (icon != null)
-        {
+        if (icon != null) {
             String iconPath = path + ".icon";
             config.set(iconPath, icon);
         }
@@ -152,17 +147,13 @@ public class Ladder
         }
 
         String effectPath = path + ".effects";
-        if (effects != null && !effects.isEmpty())
-        {
+        if (effects != null && !effects.isEmpty()) {
             config.set(effectPath, effects);
-        }
-        else
-        {
+        } else {
             config.set(effectPath, null);
         }
 
-        if (knockbackType != null)
-        {
+        if (knockbackType != null) {
             String knockbackPath = path + ".knockback";
             config.set(knockbackPath, knockbackType.name().toUpperCase());
         }
@@ -188,5 +179,4 @@ public class Ladder
         if (saveFile)
             LadderFile.save();
     }
-
 }

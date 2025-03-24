@@ -4,20 +4,22 @@ import dev.nandi0813.practice.Manager.File.ConfigManager;
 import dev.nandi0813.practice.Manager.Ladder.Ladder;
 import dev.nandi0813.practice.Practice;
 import dev.nandi0813.practice.Util.ItemSerializationUtil;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ProfileFile
-{
+public class ProfileFile {
 
     private final Profile profile;
     private final File file;
     private final YamlConfiguration config;
 
-    public ProfileFile(Profile profile)
-    {
+    public ProfileFile(Profile profile) {
         this.profile = profile;
         file = new File(Practice.getInstance().getDataFolder() + "/profiles", profile.getUuid().toString().toLowerCase() + ".yml");
         config = YamlConfiguration.loadConfiguration(file);
@@ -26,13 +28,11 @@ public class ProfileFile
     /**
      * It saves the player's profile data to the file
      */
-    public void setProfileData()
-    {
+    public void setProfileData() {
         config.set("uuid", profile.getUuid().toString());
 
         // Elo
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (ladder.isRanked())
                 config.set("stats.elo." + ladder.getName(), profile.getElo().get(ladder));
         }
@@ -44,8 +44,7 @@ public class ProfileFile
         config.set("stats.ranked.losses", profile.getRankedLosses());
 
         // Ladder win/lose stats
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (!ladder.isEnabled()) continue;
 
             if (profile.getLadderUnRankedWins().get(ladder) != null)
@@ -58,8 +57,7 @@ public class ProfileFile
             else
                 config.set("stats.ladder-stats." + ladder.getName() + ".unranked.losses", 0);
 
-            if (ladder.isRanked())
-            {
+            if (ladder.isRanked()) {
                 if (profile.getLadderRankedWins().get(ladder) != null)
                     config.set("stats.ladder-stats." + ladder.getName() + ".ranked.wins", profile.getLadderRankedWins().get(ladder));
                 else
@@ -87,10 +85,8 @@ public class ProfileFile
     /**
      * It sets the default data for a player's stats
      */
-    public void setDefaultData()
-    {
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+    public void setDefaultData() {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (!ladder.isEnabled()) continue;
 
             if (ladder.isRanked())
@@ -102,15 +98,13 @@ public class ProfileFile
         config.set("stats.ranked.wins", 0);
         config.set("stats.ranked.losses", 0);
 
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (!ladder.isEnabled()) continue;
 
             config.set("stats.ladder-stats." + ladder.getName() + ".unranked.wins", 0);
             config.set("stats.ladder-stats." + ladder.getName() + ".unranked.losses", 0);
 
-            if (ladder.isRanked())
-            {
+            if (ladder.isRanked()) {
                 config.set("stats.ladder-stats." + ladder.getName() + ".ranked.wins", 0);
                 config.set("stats.ladder-stats." + ladder.getName() + ".ranked.losses", 0);
             }
@@ -122,13 +116,15 @@ public class ProfileFile
     /**
      * It loads the player's profile data from the config file
      */
-    public void getProfileData()
-    {
-        for (String ladderName : config.getConfigurationSection("stats.elo").getKeys(false))
-        {
-            Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
-            if (ladder != null && ladder.isRanked() && config.isSet("stats.elo." + ladder.getName()))
-                profile.getElo().put(ladder, config.getInt("stats.elo." + ladder.getName()));
+    public void getProfileData() {
+        ConfigurationSection eloSection = config.getConfigurationSection("elo");
+
+        if (eloSection != null) {
+            for (String ladderName : config.getConfigurationSection("stats.elo").getKeys(false)) {
+                Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
+                if (ladder != null && ladder.isRanked() && config.isSet("stats.elo." + ladder.getName()))
+                    profile.getElo().put(ladder, config.getInt("stats.elo." + ladder.getName()));
+            }
         }
 
         profile.setUnrankedWins(config.getInt("stats.unranked.wins"));
@@ -136,16 +132,13 @@ public class ProfileFile
         profile.setRankedWins(config.getInt("stats.ranked.wins"));
         profile.setRankedLosses(config.getInt("stats.ranked.losses"));
 
-        for (String ladderName : config.getConfigurationSection("stats.ladder-stats").getKeys(false))
-        {
+        for (String ladderName : config.getConfigurationSection("stats.ladder-stats").getKeys(false)) {
             Ladder ladder = Practice.getLadderManager().getLadder(ladderName);
-            if (ladder != null)
-            {
+            if (ladder != null) {
                 profile.getLadderUnRankedWins().put(ladder, config.getInt("stats.ladder-stats." + ladder.getName() + ".unranked.wins"));
                 profile.getLadderUnRankedLosses().put(ladder, config.getInt("stats.ladder-stats." + ladder.getName() + ".unranked.losses"));
 
-                if (ladder.isRanked())
-                {
+                if (ladder.isRanked()) {
                     if (config.isSet("stats.ladder-stats." + ladder.getName() + ".ranked.wins"))
                         profile.getLadderRankedWins().put(ladder, config.getInt("stats.ladder-stats." + ladder.getName() + ".ranked.wins"));
                     if (config.isSet("stats.ladder-stats." + ladder.getName() + ".ranked.losses"))
@@ -154,8 +147,7 @@ public class ProfileFile
             }
         }
 
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
             if (config.isString("customkit.ladder" + ladder.getId() + ".inventory")) {
                 try {
                     profile.getCustomKits().put(ladder, ItemSerializationUtil.itemStackArrayFromBase64(config.getString("customkit.ladder" + ladder.getId() + ".inventory")));
@@ -171,19 +163,16 @@ public class ProfileFile
      *
      * @param ladder The ladder you want to delete the custom kit from.
      */
-    public void deleteCustomKit(Ladder ladder)
-    {
+    public void deleteCustomKit(Ladder ladder) {
         config.set("customkit." + ladder.getName().toLowerCase(), null);
         saveFile();
     }
 
-    public void saveFile()
-    {
+    public void saveFile() {
         try {
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

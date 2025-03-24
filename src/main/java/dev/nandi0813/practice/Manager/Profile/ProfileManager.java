@@ -10,10 +10,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ProfileManager
-{
+public class ProfileManager {
 
-    @Getter private final HashMap<OfflinePlayer, Profile> profiles = new HashMap<>();
+    @Getter
+    private final HashMap<OfflinePlayer, Profile> profiles = new HashMap<>();
     private final File folder = new File(Practice.getInstance().getDataFolder() + "/profiles");
 
     /**
@@ -22,20 +22,16 @@ public class ProfileManager
      * from the file, get the OfflinePlayer from the UUID, create a new Profile from the OfflinePlayer, and put the
      * OfflinePlayer and Profile into the profiles HashMap
      */
-    public void loadProfiles()
-    {
+    public void loadProfiles() {
         if (!folder.exists()) folder.mkdir();
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Practice.getInstance(), () ->
         {
-            if (folder.isDirectory() && folder.listFiles().length > 0)
-            {
-                for (File profileFile : folder.listFiles())
-                {
-                    if (profileFile.isFile() && profileFile.getName().endsWith(".yml"))
-                    {
+            if (folder.isDirectory() && folder.listFiles().length > 0) {
+                for (File profileFile : folder.listFiles()) {
+                    if (profileFile.isFile() && profileFile.getName().endsWith(".yml")) {
                         YamlConfiguration config = YamlConfiguration.loadConfiguration(profileFile);
-                        String uuidString = config.getString("uuid");
+                        String uuidString = profileFile.getName().replace(".yml", "");
 
                         UUID uuid = UUID.fromString(uuidString);
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -51,8 +47,7 @@ public class ProfileManager
     /**
      * It saves all the profiles
      */
-    public void saveProfiles()
-    {
+    public void saveProfiles() {
         for (Profile profile : profiles.values()) profile.saveData();
     }
 

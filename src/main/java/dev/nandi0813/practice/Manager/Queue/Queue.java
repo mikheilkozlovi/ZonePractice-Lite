@@ -68,7 +68,7 @@ public class Queue
                     @Override
                     public void run()
                     {
-                        int elo = profile.getElo().get(ladder);
+                        int elo = profile.getElo().getOrDefault(ladder, 1000);
                         if (queueManager.getQueue(getPlayer()) == null || elo - getRange() <= 0)
                         {
                             queueRunnable.cancel();
@@ -82,7 +82,7 @@ public class Queue
                                     && queue.getLadder() == ladder
                                     && queue.isRanked() == ranked)
                             {
-                                int queueelo = queue.getProfile().getElo().get(ladder);
+                                int queueelo = queue.getProfile().getElo().getOrDefault(ladder, 1000);
                                 if ((elo - range) <= queueelo && (elo + range) >= queueelo)
                                 {
                                     Bukkit.getScheduler().runTask(Practice.getInstance(), () -> startMatch(queue));
