@@ -19,19 +19,16 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Duel
-{
+public class Duel {
 
-    public static void startMatch(Match match)
-    {
+    public static void startMatch(Match match) {
         Player player1 = match.getPlayers().get(0);
         Player player2 = match.getPlayers().get(1);
 
         match.getTeams().put(player1, TeamEnum.TEAM1);
         match.getTeams().put(player2, TeamEnum.TEAM2);
 
-        for (String line : LanguageManager.getList("match.duel.match-start"))
-        {
+        for (String line : LanguageManager.getList("match.duel.match-start")) {
             match.sendMessage(line
                     .replaceAll("%weightClass%", (match.isRanked() ? "&cRanked" : "&aUnranked"))
                     .replaceAll("%ladder%", match.getLadder().getName())
@@ -39,42 +36,31 @@ public class Duel
         }
     }
 
-    public static void endMatch(Match match, Player winner, Player loser)
-    {
-        for (Player player : match.getPlayers())
-        {
+    public static void endMatch(Match match, Player winner, Player loser) {
+        for (Player player : match.getPlayers()) {
             PlayerMatchStat matchStat = match.getMatchStats().get(player);
             if (!matchStat.isSet()) matchStat.end();
         }
 
-        if (winner != null && loser != null)
-        {
+        if (winner != null && loser != null) {
             List<Player> msgTo = new ArrayList<>();
             msgTo.addAll(match.getPlayers());
             msgTo.addAll(match.getSpectators());
 
-            for (String line : LanguageManager.getList("match.duel.match-end"))
-            {
-                for (Player player : msgTo)
-                {
-                    if (line.contains("%winner%"))
-                    {
+            for (String line : LanguageManager.getList("match.duel.match-end")) {
+                for (Player player : msgTo) {
+                    if (line.contains("%winner%")) {
                         TextComponent winnerComponent = new TextComponent(line.replaceAll("%winner%", winner.getName()));
                         winnerComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', "&aClick to view inventory of &6" + winner.getName() + "&a.")).create()));
                         winnerComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/matchinv " + match.getMatchID() + " " + winner.getName()));
                         player.spigot().sendMessage(winnerComponent);
-                    }
-                    else if (line.contains("%loser%"))
-                    {
+                    } else if (line.contains("%loser%")) {
                         TextComponent loserComponent = new TextComponent(line.replaceAll("%loser%", loser.getName()));
                         loserComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', "&aClick to view inventory of &6" + loser.getName() + "&a.")).create()));
                         loserComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/matchinv " + match.getMatchID() + " " + loser.getName()));
                         player.spigot().sendMessage(loserComponent);
-                    }
-                    else if (line.contains("%spectators%"))
-                    {
-                        if (match.getSpectators().size() > 0)
-                        {
+                    } else if (line.contains("%spectators%")) {
+                        if (match.getSpectators().size() > 0) {
                             List<String> spectators = new ArrayList<>();
                             for (Player spectator : match.getSpectators())
                                 if (!spectator.hasPermission("zonepractice.spectate.silent"))
@@ -83,8 +69,7 @@ public class Duel
                             if (!spectators.isEmpty())
                                 player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', line.replaceAll("%size%", String.valueOf(spectators.size())).replaceAll("%spectators%", spectators.toString().replace("[", "").replace("]", ""))));
                         }
-                    }
-                    else
+                    } else
                         player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
@@ -97,8 +82,7 @@ public class Duel
             if (!match.isRanked() && (winnerProfile.getUnrankedWins() == ConfigManager.getInt("ranked.min-unranked-wins")))
                 winner.sendMessage(LanguageManager.getString("match.ranked-limit-reach"));
 
-            if (match.isRanked())
-            {
+            if (match.isRanked()) {
                 int elochange = ConfigManager.getInt("ranked.elo-change");
 
                 int winnerOldElo = winnerProfile.getElo().getOrDefault(match.getLadder(), 1000);
@@ -108,16 +92,14 @@ public class Duel
                 int loserOldElo = loserProfile.getElo().getOrDefault(match.getLadder(), 1000);
                 int loserNewElo;
 
-                if (loserOldElo >= 100)
-                {
+                if (loserOldElo >= 100) {
                     loserNewElo = loserOldElo - elochange;
                     loserProfile.getElo().put(match.getLadder(), loserNewElo);
                 }
                 loserNewElo = loserOldElo;
 
 
-                for (String line : LanguageManager.getList("match.duel.ranked-extension"))
-                {
+                for (String line : LanguageManager.getList("match.duel.ranked-extension")) {
                     match.sendMessage(line
                             .replaceAll("%winner%", winnerProfile.getPlayer().getName())
                             .replaceAll("%loser%", loserProfile.getPlayer().getName())
@@ -129,16 +111,13 @@ public class Duel
 
             winnerProfile.saveData();
             loserProfile.saveData();
-        }
-        else
-        {
+        } else {
             for (String line : LanguageManager.getList("match.duel.match-end-draw"))
                 match.sendMessage(line, true);
         }
     }
 
-    public static void killPlayer(Match match, Player player, boolean teleport)
-    {
+    public static void killPlayer(Match match, Player player, boolean teleport) {
         PlayerMatchStat matchStat = match.getMatchStats().get(player);
         if (!matchStat.isSet())
             matchStat.end();
@@ -148,18 +127,15 @@ public class Duel
             PlayerUtil.teleportPlayer(player, match);
         PlayerUtil.setMatchPlayer(player);
 
-        for (Player matchPlayer : match.getPlayers())
-        {
-            if (!matchPlayer.equals(player))
-            {
+        for (Player matchPlayer : match.getPlayers()) {
+            if (!matchPlayer.equals(player)) {
                 PlayerUtil.dropPlayerInventory(player, match);
                 match.getRoundManager().endRound(matchPlayer);
             }
         }
     }
 
-    public static Player getOppositePlayer(Match match, Player player)
-    {
+    public static Player getOppositePlayer(Match match, Player player) {
         for (Player matchPlayer : match.getPlayers())
             if (!matchPlayer.equals(player))
                 return matchPlayer;

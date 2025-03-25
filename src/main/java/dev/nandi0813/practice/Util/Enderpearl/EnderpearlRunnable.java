@@ -11,33 +11,32 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class EnderpearlRunnable extends BukkitRunnable
-{
+public class EnderpearlRunnable extends BukkitRunnable {
 
-    @Getter private final Player player;
-    @Getter private final Profile profile;
-    @Getter private boolean running;
-    @Getter private final int seconds;
+    @Getter
+    private final Player player;
+    @Getter
+    private final Profile profile;
+    @Getter
+    private boolean running;
+    @Getter
+    private final int seconds;
 
-    public EnderpearlRunnable(Player player)
-    {
+    public EnderpearlRunnable(Player player) {
         this.player = player;
         profile = Practice.getProfileManager().getProfiles().get(player);
         seconds = ConfigManager.getInt("match-settings.enderpearl.cooldown");
     }
 
-    public void begin()
-    {
+    public void begin() {
         running = true;
         PlayerCooldown.addCooldown(player, CooldownObject.ENDER_PEARL, seconds);
         this.runTaskTimerAsynchronously(Practice.getInstance(), 0, 20L);
     }
 
     @Override
-    public void cancel()
-    {
-        if (running)
-        {
+    public void cancel() {
+        if (running) {
             Bukkit.getScheduler().cancelTask(this.getTaskId());
             running = false;
             PlayerCooldown.removeCooldown(player, CooldownObject.ENDER_PEARL);
@@ -45,10 +44,8 @@ public class EnderpearlRunnable extends BukkitRunnable
     }
 
     @Override
-    public void run()
-    {
-        if (!PlayerCooldown.isActive(player, CooldownObject.ENDER_PEARL) && !profile.getStatus().equals(ProfileStatus.MATCH))
-        {
+    public void run() {
+        if (!PlayerCooldown.isActive(player, CooldownObject.ENDER_PEARL) && !profile.getStatus().equals(ProfileStatus.MATCH)) {
             cancel();
         }
     }

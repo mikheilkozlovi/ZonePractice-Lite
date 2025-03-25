@@ -6,14 +6,11 @@ import dev.nandi0813.practice.Util.ClickableMessageUtil;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class ArenaListArg
-{
+public class ArenaListArg {
 
-    public static void ListCommand(Player player)
-    {
+    public static void ListCommand(Player player) {
         player.sendMessage(StringUtil.CC("&7&m----------------------------"));
-        for (Arena arena : Practice.getArenaManager().getArenas())
-        {
+        for (Arena arena : Practice.getArenaManager().getArenas()) {
             ClickableMessageUtil.sendClickableMessage(player, " &7» &e" + arena.getName() + " &7- Status: " + StringUtil.getStatus(arena.isEnabled()), "/arena info " + arena.getName(), "&eClick here to view arena info.");
         }
         player.sendMessage(StringUtil.CC("&7&m----------------------------"));

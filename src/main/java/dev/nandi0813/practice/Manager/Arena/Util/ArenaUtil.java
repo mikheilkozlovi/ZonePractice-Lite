@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArenaUtil
-{
+public class ArenaUtil {
 
     /**
      * This function returns a list of strings that are the names of the ladders in the given arena.
@@ -19,8 +18,7 @@ public class ArenaUtil
      * @param arena The arena you want to get the ladders from.
      * @return A list of strings containing the names of the ladders in the arena.
      */
-    public static List<String> getLadderNames(Arena arena)
-    {
+    public static List<String> getLadderNames(Arena arena) {
         List<String> ladderStrings = new ArrayList<>();
         for (Ladder ladder : arena.getLadders()) ladderStrings.add(ladder.getName());
         return ladderStrings;
@@ -31,33 +29,23 @@ public class ArenaUtil
      * arena is enabled, check if there's a match in the arena, if there isn't, disable the arena
      *
      * @param player The player who is changing the arena's status.
-     * @param arena The arena you want to change the status of.
+     * @param arena  The arena you want to change the status of.
      */
-    public static void changeStatus(Player player, Arena arena)
-    {
-        if (!arena.isEnabled())
-        {
-            if (arena.getCorner1() != null && arena.getCorner2() != null && arena.getPosition1() != null && arena.getPosition2() != null && arena.getPosition3() != null)
-            {
+    public static void changeStatus(Player player, Arena arena) {
+        if (!arena.isEnabled()) {
+            if (arena.getCorner1() != null && arena.getCorner2() != null && arena.getPosition1() != null && arena.getPosition2() != null && arena.getPosition3() != null) {
                 arena.setEnabled(true);
                 arena.saveData();
                 player.sendMessage(StringUtil.CC("&eYou successfully &aenabled &earena &7" + arena.getName() + "&e."));
-            }
-            else
-            {
+            } else {
                 player.sendMessage(StringUtil.CC("&cThe arena doesn't meet all the requirements. You have to set all the corners, positions."));
             }
-        }
-        else
-        {
-            if (Practice.getMatchManager().getLiveMatchByArena(arena) == null)
-            {
+        } else {
+            if (Practice.getMatchManager().getLiveMatchByArena(arena) == null) {
                 arena.setEnabled(false);
                 arena.saveData();
                 player.sendMessage(StringUtil.CC("&eYou successfully &cdisabled &earena &7" + arena.getName() + "&e."));
-            }
-            else
-            {
+            } else {
                 player.sendMessage(StringUtil.CC("&cYou can't disable a arena that currently has a match in it."));
             }
         }
@@ -69,8 +57,7 @@ public class ArenaUtil
      *
      * @param world The world you want to set the gamerules for.
      */
-    public static void setGamerules(World world)
-    {
+    public static void setGamerules(World world) {
         world.setSpawnLocation(0, 60, 0);
         world.setGameRuleValue("doDaylightCycle", "false");
         world.setGameRuleValue("doMobSpawning", "false");

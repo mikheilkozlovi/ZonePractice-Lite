@@ -26,30 +26,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GUIManager implements Listener
-{
+public class GUIManager implements Listener {
 
-    @Getter private final List<GUI> guis = new ArrayList<>();
-    @Getter private final Map<Player, GUI> openGUI = new HashMap<>();
+    @Getter
+    private final List<GUI> guis = new ArrayList<>();
+    @Getter
+    private final Map<Player, GUI> openGUI = new HashMap<>();
 
-    @Getter private static final ItemStack fillerItem = ItemUtil.createItem(" ", Material.STAINED_GLASS_PANE, Short.valueOf("15"));
-    @Getter private static final ItemStack dummyItem = ItemUtil.createItem("DUMMY", Material.GLOWSTONE_DUST);
+    @Getter
+    private static final ItemStack fillerItem = ItemUtil.createItem(" ", Material.STAINED_GLASS_PANE, Short.valueOf("15"));
+    @Getter
+    private static final ItemStack dummyItem = ItemUtil.createItem("DUMMY", Material.GLOWSTONE_DUST);
 
-    public GUIManager()
-    {
+    public GUIManager() {
         Bukkit.getPluginManager().registerEvents(this, Practice.getInstance());
     }
 
-    public void buildGUIs()
-    {
+    public void buildGUIs() {
         guis.add(new UnrankedGui());
         guis.add(new RankedGui());
         guis.add(new PartyEventSelectorGui());
         guis.add(new CustomLadderSelectorGui());
     }
 
-    public GUI searchGUI(GUIType type)
-    {
+    public GUI searchGUI(GUIType type) {
         for (GUI gui : guis)
             if (gui.getType().equals(type))
                 return gui;
@@ -57,8 +57,7 @@ public class GUIManager implements Listener
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e)
-    {
+    public void onInventoryClick(InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player)) return;
         Player player = (Player) e.getWhoClicked();
 
@@ -69,16 +68,14 @@ public class GUIManager implements Listener
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e)
-    {
+    public void onInventoryClose(InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player)) return;
         Player player = (Player) e.getPlayer();
 
         GUI gui = openGUI.get(player);
         if (gui == null) return;
 
-        if (gui instanceof CustomLadderEditorGui)
-        {
+        if (gui instanceof CustomLadderEditorGui) {
             CustomLadderEditorGui customLadderEditorGui = (CustomLadderEditorGui) gui;
             Ladder ladder = customLadderEditorGui.getLadder();
 
@@ -88,7 +85,7 @@ public class GUIManager implements Listener
             player.getInventory().clear();
 
             Bukkit.getScheduler().runTaskLater(Practice.getInstance(), () ->
-                    Practice.getInventoryManager().getSpawnInventory().setInventory(player, false),
+                            Practice.getInventoryManager().getSpawnInventory().setInventory(player, false),
                     3L);
         }
 
@@ -97,8 +94,7 @@ public class GUIManager implements Listener
     }
 
     @EventHandler
-    public void onLadderEditorItemDrop(PlayerDropItemEvent e)
-    {
+    public void onLadderEditorItemDrop(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         GUI gui = openGUI.get(player);

@@ -13,12 +13,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PartyInventoryListener implements Listener
-{
+public class PartyInventoryListener implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e)
-    {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Party party = Practice.getPartyManager().getParty(player);
@@ -34,24 +32,17 @@ public class PartyInventoryListener implements Listener
 
         if (!action.equals(Action.RIGHT_CLICK_BLOCK) && !action.equals(Action.RIGHT_CLICK_AIR)) return;
 
-        if (item.equals(PartyInventory.getInfoItem()))
-        {
+        if (item.equals(PartyInventory.getInfoItem())) {
             player.performCommand("party info");
-        }
-        else if (item.equals(PartyInventory.getLeaveItem()))
-        {
+        } else if (item.equals(PartyInventory.getLeaveItem())) {
             party.removeMember(party, player, false);
-        }
-        else if (item.equals(PartyInventory.getHostEventItem()))
-        {
-            if (party.getLeader().equals(player))
-            {
+        } else if (item.equals(PartyInventory.getHostEventItem())) {
+            if (party.getLeader().equals(player)) {
                 if (party.getMembers().size() >= 2)
                     Practice.getGuiManager().searchGUI(GUIType.PARTY_EVENT_SELECTOR).open(player);
                 else
                     player.sendMessage(LanguageManager.getString("party.game-cant-start"));
-            }
-            else
+            } else
                 player.sendMessage(LanguageManager.getString("party.not-leader"));
         }
     }

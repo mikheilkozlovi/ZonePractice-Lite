@@ -4,8 +4,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public interface SidebarAdapter
-{
+public interface SidebarAdapter {
 
     String getTitle(Player player);
 

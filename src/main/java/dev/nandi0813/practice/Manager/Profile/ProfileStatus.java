@@ -1,7 +1,6 @@
 package dev.nandi0813.practice.Manager.Profile;
 
-public enum ProfileStatus
-{
+public enum ProfileStatus {
 
     OFFLINE,
     LOBBY,

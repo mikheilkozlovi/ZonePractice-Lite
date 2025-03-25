@@ -8,29 +8,20 @@ import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class EndmatchArg
-{
+public class EndmatchArg {
 
-    public static void MatchForceendCommand(Player player, String label, String[] args)
-    {
-        if (player.hasPermission("zonepractice.match.forceend"))
-        {
-            if (args.length == 2)
-            {
+    public static void MatchForceendCommand(Player player, String label, String[] args) {
+        if (player.hasPermission("zonepractice.match.forceend")) {
+            if (args.length == 2) {
                 Player target = Bukkit.getPlayer(args[1]);
 
-                if (target != null)
-                {
+                if (target != null) {
                     Match match = Practice.getMatchManager().getLiveMatchByPlayer(target);
 
-                    if (match != null)
-                    {
-                        if (!match.getStatus().equals(MatchStatus.END))
-                        {
-                            for (Player matchPlayer : match.getPlayers())
-                            {
-                                if (matchPlayer.hasPermission("zonepractice.bypass.match.forceend"))
-                                {
+                    if (match != null) {
+                        if (!match.getStatus().equals(MatchStatus.END)) {
+                            for (Player matchPlayer : match.getPlayers()) {
+                                if (matchPlayer.hasPermission("zonepractice.bypass.match.forceend")) {
                                     player.sendMessage(StringUtil.CC("&cYou can't end this match."));
                                     return;
                                 }
@@ -40,20 +31,15 @@ public class EndmatchArg
                             player.sendMessage(StringUtil.CC("&aYou successfully ended " + target.getName() + "'s match."));
 
                             match.endMatch();
-                        }
-                        else
+                        } else
                             player.sendMessage(StringUtil.CC("&cThe match is already ended."));
-                    }
-                    else
+                    } else
                         player.sendMessage(StringUtil.CC("&cPlayer is not in a match."));
-                }
-                else
+                } else
                     player.sendMessage(StringUtil.CC("&cPlayer is not online."));
-            }
-            else
+            } else
                 player.sendMessage(StringUtil.CC("&c/" + label + " endmatch <player>"));
-        }
-        else
+        } else
             player.sendMessage(LanguageManager.getString("no-permission"));
     }
 

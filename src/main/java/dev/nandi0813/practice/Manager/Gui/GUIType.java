@@ -1,7 +1,6 @@
 package dev.nandi0813.practice.Manager.Gui;
 
-public enum GUIType
-{
+public enum GUIType {
 
     QUEUE_UNRANKED,
     QUEUE_RANKED,

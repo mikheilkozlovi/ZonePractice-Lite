@@ -13,20 +13,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PartyTabCompleter implements TabCompleter
-{
+public class PartyTabCompleter implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args)
-    {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) return null;
 
         Player player = (Player) commandSender;
         List<String> arguments = new ArrayList<>();
         List<String> completion = new ArrayList<>();
 
-        if (args.length == 1)
-        {
+        if (args.length == 1) {
             arguments.add("create");
             arguments.add("accept");
             arguments.add("leave");
@@ -37,11 +34,8 @@ public class PartyTabCompleter implements TabCompleter
             arguments.add("disband");
 
             StringUtil.copyPartialMatches(args[0], arguments, completion);
-        }
-        else if (args.length == 2)
-        {
-            switch (args[0])
-            {
+        } else if (args.length == 2) {
+            switch (args[0]) {
                 case "invite":
                     if (Practice.getPartyManager().getParty(player) == null)
                         return arguments;

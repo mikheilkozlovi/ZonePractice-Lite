@@ -14,56 +14,39 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class SpawnInventoryListener implements Listener
-{
+public class SpawnInventoryListener implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e)
-    {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         Party party = Practice.getPartyManager().getParty(player);
         ItemStack item = e.getItem();
         Action action = e.getAction();
 
-        if (item != null && profile.getStatus().equals(ProfileStatus.LOBBY) && party == null)
-        {
+        if (item != null && profile.getStatus().equals(ProfileStatus.LOBBY) && party == null) {
             if (!player.hasPermission("zonepractice.admin"))
                 e.setCancelled(true);
 
-            if (action.equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR))
-            {
-                if (item.equals(SpawnInventory.getUnrankedItem()))
-                {
+            if (action.equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+                if (item.equals(SpawnInventory.getUnrankedItem())) {
                     Practice.getGuiManager().searchGUI(GUIType.QUEUE_UNRANKED).open(player);
-                }
-                else if (item.equals(SpawnInventory.getRankedItem()))
-                {
+                } else if (item.equals(SpawnInventory.getRankedItem())) {
                     int i1 = Practice.getMatchManager().getAllowedRankedPerDay().get(player);
                     int i2 = Practice.getMatchManager().getRankedPerDay().get(player);
 
-                    if (i1 > i2)
-                    {
+                    if (i1 > i2) {
                         Practice.getGuiManager().searchGUI(GUIType.QUEUE_RANKED).open(player);
-                    }
-                    else
+                    } else
                         player.sendMessage(LanguageManager.getString("match.ranked-limit"));
-                }
-                else if (item.equals(SpawnInventory.getKiteditorItem()))
-                {
-                    if (player.hasPermission("zonepractice.customkit"))
-                    {
+                } else if (item.equals(SpawnInventory.getKiteditorItem())) {
+                    if (player.hasPermission("zonepractice.customkit")) {
                         Practice.getGuiManager().searchGUI(GUIType.CUSTOM_LADDER_SELECTOR).open(player);
-                    }
-                    else
+                    } else
                         player.sendMessage(LanguageManager.getString("no-permission"));
-                }
-                else if (item.equals(SpawnInventory.getPartyItem()))
-                {
+                } else if (item.equals(SpawnInventory.getPartyItem())) {
                     Practice.getPartyManager().createParty(player);
-                }
-                else if (item.equals(SpawnInventory.getStatsItem()))
-                {
+                } else if (item.equals(SpawnInventory.getStatsItem())) {
                     new StatsGui(profile).open(player);
                 }
             }

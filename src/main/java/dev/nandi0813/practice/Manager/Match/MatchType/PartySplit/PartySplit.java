@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PartySplit
-{
+public class PartySplit {
 
     /**
      * It collects all players in the match, shuffles them, splits them into two teams, and then sends a message to the
@@ -20,8 +19,7 @@ public class PartySplit
      *
      * @param match The match object.
      */
-    public static void startMatch(Match match)
-    {
+    public static void startMatch(Match match) {
         // Collect and shuffle players
         List<Player> players = new ArrayList<>(match.getPlayers());
         Collections.shuffle(players);
@@ -32,15 +30,11 @@ public class PartySplit
         ArrayList<String> team1Names = new ArrayList<>();
         ArrayList<String> team2Names = new ArrayList<>();
 
-        for (Player player : players)
-        {
-            if (team2.size() > team1.size())
-            {
+        for (Player player : players) {
+            if (team2.size() > team1.size()) {
                 team1.add(player);
                 team1Names.add(player.getName());
-            }
-            else
-            {
+            } else {
                 team2.add(player);
                 team2Names.add(player.getName());
             }
@@ -52,8 +46,7 @@ public class PartySplit
         for (Player player : team2)
             match.getTeams().put(player, TeamEnum.TEAM2);
 
-        for (String line : LanguageManager.getList("match.partysplit.match-start"))
-        {
+        for (String line : LanguageManager.getList("match.partysplit.match-start")) {
             match.sendMessage(line
                     .replaceAll("%ladder%", match.getLadder().getName())
                     .replaceAll("%map%", match.getArena().getName())
@@ -67,25 +60,21 @@ public class PartySplit
     /**
      * It sends a message to the players in the match, telling them who won and who lost
      *
-     * @param match The match that is ending
+     * @param match  The match that is ending
      * @param winner The player who won the match. If the match ended in a draw, this will be null.
      */
-    public static void endMatch(Match match, Player winner)
-    {
-        if (winner != null)
-        {
+    public static void endMatch(Match match, Player winner) {
+        if (winner != null) {
             ArrayList<String> winners = new ArrayList<>();
             ArrayList<String> losers = new ArrayList<>();
-            for (Player player : match.getPlayers())
-            {
+            for (Player player : match.getPlayers()) {
                 if (match.getTeams().get(player).equals(match.getTeams().get(winner)))
                     winners.add(player.getName());
                 else
                     losers.add(player.getName());
             }
 
-            for (String line : LanguageManager.getList("match.partysplit.match-end"))
-            {
+            for (String line : LanguageManager.getList("match.partysplit.match-end")) {
                 match.sendMessage(line
                                 .replaceAll("%winnerTeam%", match.getTeams().get(winner).getName())
                                 .replaceAll("%winnerPlayers%", winners.toString().replace("[", "").replace("]", ""))
@@ -93,9 +82,7 @@ public class PartySplit
                                 .replaceAll("%loserPlayers%", losers.toString().replace("[", "").replace("]", ""))
                         , true);
             }
-        }
-        else
-        {
+        } else {
             for (String line : LanguageManager.getList("match.partysplit.match-end-draw"))
                 match.sendMessage(line, true);
         }
@@ -105,14 +92,13 @@ public class PartySplit
      * It removes a player from the alive players list, sends a message to the match, hides the player from the other
      * players, and ends the round if the player's team is empty
      *
-     * @param match The match object
-     * @param player The player that died
+     * @param match   The match object
+     * @param player  The player that died
      * @param message If true, the message will be sent to the players.
      */
-    public static void killPlayer(Match match, Player player, boolean message)
-    {
+    public static void killPlayer(Match match, Player player, boolean message) {
         match.getAlivePlayers().remove(player);
-        List<Player> playerTeam = getTeamAlivePlayers(match,  match.getTeams().get(player));
+        List<Player> playerTeam = getTeamAlivePlayers(match, match.getTeams().get(player));
 
         if (message)
             match.sendMessage(LanguageManager.getString("match.partysplit.player-die").replaceAll("%player%", player.getName()).replaceAll("%playerTeam%", match.getTeams().get(player).getName()).replaceAll("%playerTeamLeft%", String.valueOf(playerTeam.size())), true);
@@ -127,16 +113,15 @@ public class PartySplit
 
     /**
      * "Return a list of players on the given team."
-     *
+     * <p>
      * The first line of the function is the function signature. It tells us the name of the function, the type of the
      * return value, and the types of the parameters
      *
      * @param match The match object
-     * @param team The team you want to get the players from.
+     * @param team  The team you want to get the players from.
      * @return A list of players on a team.
      */
-    public static List<Player> getTeamPlayers(Match match, TeamEnum team)
-    {
+    public static List<Player> getTeamPlayers(Match match, TeamEnum team) {
         List<Player> players = new ArrayList<>();
         for (Player player : match.getPlayers())
             if (match.getTeams().get(player).equals(team))
@@ -148,11 +133,10 @@ public class PartySplit
      * Returns a list of all the alive players on a team.
      *
      * @param match The match object
-     * @param team The team you want to get the players from.
+     * @param team  The team you want to get the players from.
      * @return A list of players that are alive and on the team.
      */
-    public static List<Player> getTeamAlivePlayers(Match match, TeamEnum team)
-    {
+    public static List<Player> getTeamAlivePlayers(Match match, TeamEnum team) {
         List<Player> players = new ArrayList<>();
         for (Player player : getTeamPlayers(match, team))
             if (match.getAlivePlayers().contains(player))

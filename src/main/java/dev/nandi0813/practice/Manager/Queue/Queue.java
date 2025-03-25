@@ -21,22 +21,31 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 
-public class Queue
-{
+public class Queue {
 
     private final QueueManager queueManager = Practice.getQueueManager();
 
-    @Getter @Setter private Player player;
-    @Getter private final Profile profile;
-    @Getter @Setter private Ladder ladder;
-    @Getter @Setter private boolean ranked;
-    @Getter @Setter private int range;
-    @Getter private final QueueRunnable queueRunnable = new QueueRunnable(this);
-    @Getter private BukkitTask eloRunnable;
+    @Getter
+    @Setter
+    private Player player;
+    @Getter
+    private final Profile profile;
+    @Getter
+    @Setter
+    private Ladder ladder;
+    @Getter
+    @Setter
+    private boolean ranked;
+    @Getter
+    @Setter
+    private int range;
+    @Getter
+    private final QueueRunnable queueRunnable = new QueueRunnable(this);
+    @Getter
+    private BukkitTask eloRunnable;
     private final int rangeIncrease = ConfigManager.getConfig().getInt("ranked.elo-range-increase");
 
-    public Queue(Player player, Ladder ladder, boolean ranked)
-    {
+    public Queue(Player player, Ladder ladder, boolean ranked) {
         this.player = player;
         profile = Practice.getProfileManager().getProfiles().get(player);
         this.ladder = ladder;
@@ -47,13 +56,11 @@ public class Queue
     /**
      * It starts the queue
      */
-    public void startQueue()
-    {
+    public void startQueue() {
         QueueStartEvent queueStartEvent = new QueueStartEvent(this);
         Bukkit.getPluginManager().callEvent(queueStartEvent);
 
-        if (!queueStartEvent.isCancelled())
-        {
+        if (!queueStartEvent.isCancelled()) {
             profile.setStatus(ProfileStatus.QUEUE);
             Practice.getInventoryManager().getQueueInventory().setQueueInventory(player);
             queueManager.getQueues().add(this);
@@ -61,30 +68,23 @@ public class Queue
             queueRunnable.begin();
             player.sendMessage(LanguageManager.getString("queue.queue-start").replaceAll("%weightClass%", (ranked ? "ranked" : "unranked")).replaceAll("%ladderName%", ladder.getName()));
 
-            if (ranked)
-            {
-                eloRunnable = new BukkitRunnable()
-                {
+            if (ranked) {
+                eloRunnable = new BukkitRunnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         int elo = profile.getElo().getOrDefault(ladder, 1000);
-                        if (queueManager.getQueue(getPlayer()) == null || elo - getRange() <= 0)
-                        {
+                        if (queueManager.getQueue(getPlayer()) == null || elo - getRange() <= 0) {
                             queueRunnable.cancel();
                             this.cancel();
                             return;
                         }
-                        for (Queue queue : queueManager.getQueues())
-                        {
+                        for (Queue queue : queueManager.getQueues()) {
                             if (queue != queueManager.getQueue(player)
                                     && queue.getPlayer() != player
                                     && queue.getLadder() == ladder
-                                    && queue.isRanked() == ranked)
-                            {
+                                    && queue.isRanked() == ranked) {
                                 int queueelo = queue.getProfile().getElo().getOrDefault(ladder, 1000);
-                                if ((elo - range) <= queueelo && (elo + range) >= queueelo)
-                                {
+                                if ((elo - range) <= queueelo && (elo + range) >= queueelo) {
                                     Bukkit.getScheduler().runTask(Practice.getInstance(), () -> startMatch(queue));
 
                                     queueRunnable.cancel();
@@ -104,16 +104,12 @@ public class Queue
 
                     }
                 }.runTaskTimerAsynchronously(Practice.getInstance(), 0, 20L * ConfigManager.getConfig().getInt("ranked.elo-range-time"));
-            }
-            else
-            {
-                for (Queue queue : queueManager.getQueues())
-                {
+            } else {
+                for (Queue queue : queueManager.getQueues()) {
                     if (queue != queueManager.getQueue(player)
                             && queue.getPlayer() != player
                             && queue.getLadder() == ladder
-                            && queue.isRanked() == ranked)
-                    {
+                            && queue.isRanked() == ranked) {
                         startMatch(queue);
                         return;
                     }
@@ -130,11 +126,9 @@ public class Queue
      *
      * @param queue The queue of the player you want to start a match with.
      */
-    public void startMatch(Queue queue)
-    {
+    public void startMatch(Queue queue) {
         Arena arena = Practice.getArenaManager().getRandomArena(ladder.isBuild());
-        if (arena != null)
-        {
+        if (arena != null) {
             queue.endQueue(true);
             endQueue(true);
 
@@ -160,8 +154,7 @@ public class Queue
      *
      * @param foundMatch Whether or not the player was found a match.
      */
-    public void endQueue(boolean foundMatch)
-    {
+    public void endQueue(boolean foundMatch) {
         QueueEndEvent queueEndEvent = new QueueEndEvent(this);
         Bukkit.getPluginManager().callEvent(queueEndEvent);
 
@@ -170,8 +163,7 @@ public class Queue
         queueRunnable.cancel();
         if (eloRunnable != null) eloRunnable.cancel();
 
-        if (!foundMatch && player.isOnline())
-        {
+        if (!foundMatch && player.isOnline()) {
             Practice.getInventoryManager().getSpawnInventory().setInventory(player, false);
             player.sendMessage(LanguageManager.getString("queue.queue-end").replaceAll("%weightClass%", (ranked ? "ranked" : "unranked")).replaceAll("%ladderName%", ladder.getName()));
         }

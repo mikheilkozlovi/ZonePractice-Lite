@@ -19,13 +19,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsGui extends GUI
-{
+public class StatsGui extends GUI {
 
-    @Getter private final Profile profile;
+    @Getter
+    private final Profile profile;
 
-    public StatsGui(Profile profile)
-    {
+    public StatsGui(Profile profile) {
         super(GUIType.PROFILE_STATS);
         this.profile = profile;
 
@@ -35,21 +34,18 @@ public class StatsGui extends GUI
     }
 
     @Override
-    public void build()
-    {
+    public void build() {
         update();
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         Bukkit.getScheduler().runTaskAsynchronously(Practice.getInstance(), () ->
         {
             DecimalFormat df = new DecimalFormat("0.00");
 
             List<String> overallLore = new ArrayList<>();
-            for (String line : LanguageManager.getList("gui.stats.overall.lore"))
-            {
+            for (String line : LanguageManager.getList("gui.stats.overall.lore")) {
                 overallLore.add(line
                         .replaceAll("%wins%", String.valueOf((profile.getUnrankedWins() + profile.getRankedWins())))
                         .replaceAll("%losses%", String.valueOf((profile.getUnrankedLosses() + profile.getRankedLosses())))
@@ -58,31 +54,24 @@ public class StatsGui extends GUI
             gui.get(1).setItem(20, ItemUtil.createItem(LanguageManager.getString("gui.stats.overall.name"), Material.DIAMOND, overallLore));
 
 
-            for (Ladder ladder : Practice.getLadderManager().getLadders())
-            {
-                if (ladder.isEnabled())
-                {
+            for (Ladder ladder : Practice.getLadderManager().getLadders()) {
+                if (ladder.isEnabled()) {
                     ItemStack item = ladder.getIcon().clone();
                     ItemMeta itemMeta = item.getItemMeta();
 
                     List<String> lore = new ArrayList<>();
-                    if (ladder.isRanked())
-                    {
-                        for (String line : LanguageManager.getList("gui.stats.ladder.ranked.lore"))
-                        {
+                    if (ladder.isRanked()) {
+                        for (String line : LanguageManager.getList("gui.stats.ladder.ranked.lore")) {
                             lore.add(line
-                                    .replaceAll("%elo%", String.valueOf(profile.getElo().get(ladder)))
+                                    .replaceAll("%elo%", String.valueOf(profile.getElo().getOrDefault(ladder, 1000)))
                                     .replaceAll("%unrankedWins%", String.valueOf(profile.getLadderUnRankedWins().get(ladder)))
                                     .replaceAll("%unrankedLosses%", String.valueOf(profile.getLadderUnRankedLosses().get(ladder)))
                                     .replaceAll("%rankedWins%", String.valueOf(profile.getLadderRankedWins().get(ladder)))
                                     .replaceAll("%rankedLosses%", String.valueOf(profile.getLadderRankedLosses().get(ladder)))
                                     .replaceAll("%w/l-ratio%", df.format(((profile.getLadderRankedWins().get(ladder) + profile.getLadderUnRankedWins().get(ladder)) * 1.0 / (profile.getLadderRankedLosses().get(ladder) + profile.getLadderUnRankedLosses().get(ladder))))));
                         }
-                    }
-                    else
-                    {
-                        for (String line : LanguageManager.getList("gui.stats.ladder.unranked.lore"))
-                        {
+                    } else {
+                        for (String line : LanguageManager.getList("gui.stats.ladder.unranked.lore")) {
                             lore.add(line
                                     .replaceAll("%unrankedWins%", String.valueOf(profile.getLadderUnRankedWins().get(ladder)))
                                     .replaceAll("%unrankedLosses%", String.valueOf(profile.getLadderUnRankedLosses().get(ladder)))
@@ -93,10 +82,8 @@ public class StatsGui extends GUI
                     itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
 
-                    for (int i : new int[]{14,15,16,23,24,25,32,33,34})
-                    {
-                        if (gui.get(1).getItem(i) == null)
-                        {
+                    for (int i : new int[]{14, 15, 16, 23, 24, 25, 32, 33, 34}) {
+                        if (gui.get(1).getItem(i) == null) {
                             gui.get(1).setItem(i, ItemUtil.hideItemFlags(item));
                             break;
                         }
@@ -109,8 +96,7 @@ public class StatsGui extends GUI
     }
 
     @Override
-    public void handleClickEvent(InventoryClickEvent e)
-    {
+    public void handleClickEvent(InventoryClickEvent e) {
         e.setCancelled(true);
     }
 }

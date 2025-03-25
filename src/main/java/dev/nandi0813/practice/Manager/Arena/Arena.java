@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
-public class Arena
-{
+@Getter
+@Setter
+public class Arena {
 
     private final String name;
     private boolean available;
@@ -30,8 +30,7 @@ public class Arena
     private boolean enabled;
     private final ArenaFile file;
 
-    public Arena(String name)
-    {
+    public Arena(String name) {
         this.name = name;
         available = true;
 
@@ -41,13 +40,11 @@ public class Arena
         createCuboid();
     }
 
-    public void saveData()
-    {
+    public void saveData() {
         file.setData();
     }
 
-    public void deleteData()
-    {
+    public void deleteData() {
         Practice.getArenaManager().getArenaCuboids().remove(cuboid);
         file.getFile().delete();
     }
@@ -55,10 +52,8 @@ public class Arena
     /**
      * If the two corners are not null, create a new cuboid with the two corners and add it to the arena cuboids map.
      */
-    public void createCuboid()
-    {
-        if (corner1 != null && corner2 != null)
-        {
+    public void createCuboid() {
+        if (corner1 != null && corner2 != null) {
             cuboid = new Cuboid(corner1, corner2);
             Practice.getArenaManager().getArenaCuboids().put(cuboid, this);
         }
@@ -71,8 +66,7 @@ public class Arena
      *
      * @return A location
      */
-    public Location getAvailableLocation()
-    {
+    public Location getAvailableLocation() {
         if (position3 != null) return position3;
         if (position1 != null) return position1;
         if (position2 != null) return position2;
@@ -87,23 +81,19 @@ public class Arena
      *
      * @param player The player to teleport.
      */
-    public void teleport(Player player)
-    {
-        if (getAvailableLocation() != null)
-        {
+    public void teleport(Player player) {
+        if (getAvailableLocation() != null) {
             player.setGameMode(GameMode.CREATIVE);
             player.setFlying(true);
             player.teleport(getAvailableLocation());
             player.closeInventory();
-        }
-        else player.sendMessage(StringUtil.CC("&cArena has no available location."));
+        } else player.sendMessage(StringUtil.CC("&cArena has no available location."));
     }
 
     /**
      * It sets the build boolean to the opposite of what it was, clears the ladders list, and saves the data
      */
-    public void changeBuildStatus()
-    {
+    public void changeBuildStatus() {
         setBuild(!build);
         ladders.clear();
         saveData();

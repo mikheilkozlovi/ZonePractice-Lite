@@ -19,13 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomLadderSelectorGui extends GUI
-{
+public class CustomLadderSelectorGui extends GUI {
 
     private final Map<Integer, Ladder> ladderSlots = new HashMap<>();
 
-    public CustomLadderSelectorGui()
-    {
+    public CustomLadderSelectorGui() {
         super(GUIType.CUSTOM_LADDER_SELECTOR);
 
         this.gui.put(1, InventoryUtil.createInventory(LanguageManager.getString("gui.kit-editor.selector.title"), 1));
@@ -34,21 +32,17 @@ public class CustomLadderSelectorGui extends GUI
     }
 
     @Override
-    public void build()
-    {
+    public void build() {
         update();
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         gui.get(1).clear();
         ladderSlots.clear();
 
-        for (Ladder ladder : Practice.getLadderManager().getLadders())
-        {
-            if (ladder.isEnabled() && ladder.isEditable())
-            {
+        for (Ladder ladder : Practice.getLadderManager().getLadders()) {
+            if (ladder.isEnabled() && ladder.isEditable()) {
                 ItemStack icon = ladder.getIcon().clone();
                 ItemMeta iconMeta = icon.getItemMeta();
                 ItemUtil.hideItemFlags(iconMeta);
@@ -70,8 +64,7 @@ public class CustomLadderSelectorGui extends GUI
     }
 
     @Override
-    public void handleClickEvent(InventoryClickEvent e)
-    {
+    public void handleClickEvent(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         int slot = e.getRawSlot();
@@ -83,8 +76,7 @@ public class CustomLadderSelectorGui extends GUI
         if (!ladderSlots.containsKey(slot)) return;
         Ladder ladder = ladderSlots.get(slot);
 
-        if (!ladder.isEnabled())
-        {
+        if (!ladder.isEnabled()) {
             update();
             return;
         }

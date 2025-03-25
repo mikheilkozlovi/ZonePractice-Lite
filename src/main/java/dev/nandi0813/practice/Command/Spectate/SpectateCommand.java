@@ -13,21 +13,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SpectateCommand implements CommandExecutor
-{
+public class SpectateCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-            if (!profile.getStatus().equals(ProfileStatus.OFFLINE))
-            {
-                if (!player.hasPermission("zonepractice.spectate"))
-                {
+            if (!profile.getStatus().equals(ProfileStatus.OFFLINE)) {
+                if (!player.hasPermission("zonepractice.spectate")) {
                     player.sendMessage(LanguageManager.getString("no-permission"));
                     return false;
                 }
@@ -35,39 +30,28 @@ public class SpectateCommand implements CommandExecutor
                 if (args.length != 1)
                     player.sendMessage(StringUtil.CC("&c/" + label + " <player>"));
 
-                else
-                {
+                else {
                     Player target = Bukkit.getPlayer(args[0]);
                     Party party = Practice.getPartyManager().getParty(player);
 
-                    if ((profile.getStatus().equals(ProfileStatus.LOBBY) || profile.getStatus().equals(ProfileStatus.SPECTATE)) && party == null)
-                    {
-                        if (target != null)
-                        {
-                            if (target != player)
-                            {
+                    if ((profile.getStatus().equals(ProfileStatus.LOBBY) || profile.getStatus().equals(ProfileStatus.SPECTATE)) && party == null) {
+                        if (target != null) {
+                            if (target != player) {
                                 Profile targetProfile = Practice.getProfileManager().getProfiles().get(target);
                                 Match match = Practice.getMatchManager().getLiveMatchByPlayer(target);
 
-                                if (targetProfile.getStatus().equals(ProfileStatus.MATCH))
-                                {
-                                    if (!match.getSpectators().contains(player))
-                                    {
+                                if (targetProfile.getStatus().equals(ProfileStatus.MATCH)) {
+                                    if (!match.getSpectators().contains(player)) {
                                         match.addSpectator(player);
-                                    }
-                                    else
+                                    } else
                                         player.sendMessage(LanguageManager.getString("spectate-command.already-spectating-match"));
-                                }
-                                else
+                                } else
                                     player.sendMessage(LanguageManager.getString("spectate-command.player-not-in-match"));
-                            }
-                            else
+                            } else
                                 player.sendMessage(LanguageManager.getString("spectate-command.cant-spec-yourself"));
-                        }
-                        else
+                        } else
                             player.sendMessage(LanguageManager.getString("spectate-command.player-not-online"));
-                    }
-                    else
+                    } else
                         player.sendMessage(LanguageManager.getString("spectate-command.cant-spectate"));
                 }
             }

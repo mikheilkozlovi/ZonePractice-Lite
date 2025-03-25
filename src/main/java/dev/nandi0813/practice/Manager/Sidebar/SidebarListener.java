@@ -9,12 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class SidebarListener implements Listener
-{
+public class SidebarListener implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e)
-    {
+    public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
         if (!ConfigManager.getBoolean("multi-game-support"))
@@ -23,8 +21,7 @@ public class SidebarListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e)
-    {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         Practice.getSidebarManager().unLoadSidebar(player);
     }

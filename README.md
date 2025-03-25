@@ -2,7 +2,10 @@
 
 ## Overview
 
-**ZonePractice Lite** is a lightweight practice core plugin for Minecraft servers. It provides essential features and functionalities to enhance the practice and training experience for players. This plugin is designed to be easy to use and highly configurable, making it an ideal choice for server administrators who want to offer a seamless and enjoyable practice environment.
+**ZonePractice Lite** is a lightweight practice core plugin for Minecraft servers. It provides essential features and
+functionalities to enhance the practice and training experience for players. This plugin is designed to be easy to use
+and highly configurable, making it an ideal choice for server administrators who want to offer a seamless and enjoyable
+practice environment.
 
 ## Features
 
@@ -25,7 +28,8 @@
    Restart your Minecraft server to load the plugin.
 
 4. **Configuration:**
-   After the server restarts, a configuration file will be generated in the `plugins/ZonePractice Lite` directory. Edit this file to customize the plugin settings according to your needs.
+   After the server restarts, a configuration file will be generated in the `plugins/ZonePractice Lite` directory. Edit
+   this file to customize the plugin settings according to your needs.
 
 ## Dependencies
 
@@ -35,8 +39,8 @@
 
 ## Configuration
 
-The main configuration file is located at `plugins/ZonePractice Lite/config.yml`. This file allows you to customize various aspects of the plugin, match, arena, ladder settings, and more.
-
+The main configuration file is located at `plugins/ZonePractice Lite/config.yml`. This file allows you to customize
+various aspects of the plugin, match, arena, ladder settings, and more.
 
 ## Support
 
@@ -44,7 +48,8 @@ For support and more information, please join our [Discord server](https://disco
 
 ## Contribution
 
-We welcome contributions from the community. If you would like to contribute, please fork the repository and submit a pull request with your changes.
+We welcome contributions from the community. If you would like to contribute, please fork the repository and submit a
+pull request with your changes.
 
 ## License
 

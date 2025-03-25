@@ -3,19 +3,19 @@ version: '${project.version}'
 main: dev.nandi0813.practice.Practice
 authors: [ Nandi0813 ]
 depend: [ ProtocolLib ]
-softdepend:  [ PlaceholderAPI ]
+softdepend: [ PlaceholderAPI ]
 commands:
   arena:
   ladder:
   practice:
-    aliases: [prac, zonepractice, zoneprac, zonep]
+    aliases: [ prac, zonepractice, zoneprac, zonep ]
   spectate:
     aliases: spec
   party:
     aliases: p
   matchinv:
   statistics:
-    aliases: [stats]
+    aliases: [ stats ]
   leaderboard:
 
 permissions:

@@ -12,36 +12,27 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class MatchinvCommand implements CommandExecutor
-{
+public class MatchinvCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-            if (!profile.getStatus().equals(ProfileStatus.OFFLINE))
-            {
+            if (!profile.getStatus().equals(ProfileStatus.OFFLINE)) {
                 if (args.length != 2)
                     player.sendMessage(StringUtil.CC("&c/" + label + " <matchid> <player>"));
-                else
-                {
+                else {
                     Match match = Practice.getMatchManager().getMatches().get(args[0]);
                     Player target = Bukkit.getPlayer(args[1]);
 
-                    if (match != null)
-                    {
-                        if (target != null && match.getPlayers().contains(target) && match.getMatchStats().containsKey(target) && match.getMatchStats().get(target).isSet())
-                        {
+                    if (match != null) {
+                        if (target != null && match.getPlayers().contains(target) && match.getMatchStats().containsKey(target) && match.getMatchStats().get(target).isSet()) {
                             new MatchStatsGui(match.getMatchStats().get(target)).open(player);
-                        }
-                        else
+                        } else
                             player.sendMessage(StringUtil.CC("&cPlayer cannot be found."));
-                    }
-                    else
+                    } else
                         player.sendMessage(StringUtil.CC("&cMatch cannot be found."));
                 }
             }

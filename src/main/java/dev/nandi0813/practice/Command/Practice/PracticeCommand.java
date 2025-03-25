@@ -7,17 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PracticeCommand implements CommandExecutor
-{
+public class PracticeCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("zonepractice.practice"))
-            {
+            if (!player.hasPermission("zonepractice.practice")) {
                 player.sendMessage(LanguageManager.getString("no-permission"));
                 return false;
             }

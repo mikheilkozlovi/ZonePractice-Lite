@@ -10,24 +10,20 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class QueueInventoryListener implements Listener
-{
+public class QueueInventoryListener implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e)
-    {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
         ItemStack item = e.getItem();
         Action action = e.getAction();
 
-        if (item != null && profile.getStatus().equals(ProfileStatus.QUEUE))
-        {
+        if (item != null && profile.getStatus().equals(ProfileStatus.QUEUE)) {
             if (!player.hasPermission("zonepractice.admin"))
                 e.setCancelled(true);
 
-            if (action.equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR))
-            {
+            if (action.equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 if (item.equals(QueueInventory.getLeaveItem()))
                     Practice.getQueueManager().getQueue(player).endQueue(false);
             }

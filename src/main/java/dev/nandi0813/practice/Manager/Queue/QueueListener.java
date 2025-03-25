@@ -6,12 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class QueueListener implements Listener
-{
+public class QueueListener implements Listener {
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e)
-    {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         Queue queue = Practice.getQueueManager().getQueue(player);
 

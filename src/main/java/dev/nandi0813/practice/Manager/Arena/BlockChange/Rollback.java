@@ -11,8 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class Rollback
-{
+public class Rollback {
 
     /**
      * It rolls back the arena by iterating through the list of blocks that were changed during the match, and then
@@ -20,10 +19,8 @@ public class Rollback
      *
      * @param match The match that is being rolled back.
      */
-    public static void rollBackArena(Match match)
-    {
-        if (!Practice.getInstance().isEnabled())
-        {
+    public static void rollBackArena(Match match) {
+        if (!Practice.getInstance().isEnabled()) {
             quickRollbackArena(match);
             return;
         }
@@ -35,30 +32,21 @@ public class Rollback
         List<CachedBlock> dirtToGrassLater = new ArrayList<>();
         match.getBlockChange().clear();
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 int changeCounter = 0;
                 int checkCounter = 0;
 
-                try
-                {
-                    while (iterator.hasNext())
-                    {
-                        if (changeCounter < maxChanges && checkCounter < maxChecks)
-                        {
+                try {
+                    while (iterator.hasNext()) {
+                        if (changeCounter < maxChanges && checkCounter < maxChecks) {
                             CachedBlock l = iterator.next();
 
-                            if (l != null)
-                            {
-                                if (l.getOldMaterial() == Material.GRASS || l.getOldMaterial() == Material.MYCEL || (l.getOldMaterial() == Material.DIRT && l.getOldData() == 2))
-                                {
+                            if (l != null) {
+                                if (l.getOldMaterial() == Material.GRASS || l.getOldMaterial() == Material.MYCEL || (l.getOldMaterial() == Material.DIRT && l.getOldData() == 2)) {
                                     dirtToGrassLater.add(l);
-                                }
-                                else
-                                {
+                                } else {
                                     changeCounter++;
                                     checkCounter++;
                                     l.reset();
@@ -67,38 +55,29 @@ public class Rollback
                                 }
                             }
                             iterator.remove();
-                        }
-                        else return;
+                        } else return;
                     }
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     this.cancel();
                     e.printStackTrace();
                 }
                 this.cancel();
 
                 // Dirt
-                new BukkitRunnable()
-                {
+                new BukkitRunnable() {
                     final Iterator<CachedBlock> iterator = dirtToGrassLater.iterator();
 
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         int changeCounter = 0;
                         int checkCounter = 0;
 
-                        try
-                        {
-                            while (iterator.hasNext())
-                            {
-                                if (changeCounter < maxChanges && checkCounter < maxChecks)
-                                {
+                        try {
+                            while (iterator.hasNext()) {
+                                if (changeCounter < maxChanges && checkCounter < maxChecks) {
                                     CachedBlock l = iterator.next();
 
-                                    if (l != null)
-                                    {
+                                    if (l != null) {
                                         changeCounter++;
                                         checkCounter++;
                                         l.reset();
@@ -106,12 +85,9 @@ public class Rollback
                                         b.removeMetadata(RollbackListener.PLACED_IN_FIGHT, Practice.getInstance());
                                     }
                                     iterator.remove();
-                                }
-                                else return;
+                                } else return;
                             }
-                        }
-                        catch(Exception e)
-                        {
+                        } catch (Exception e) {
                             this.cancel();
                             e.printStackTrace();
                         }
@@ -128,13 +104,11 @@ public class Rollback
      *
      * @param match The match that you want to rollback.
      */
-    public static void quickRollbackArena(Match match)
-    {
+    public static void quickRollbackArena(Match match) {
         Iterator<CachedBlock> iterator = new HashSet<>(match.getBlockChange()).iterator();
         match.getBlockChange().clear();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             CachedBlock l = iterator.next();
             l.reset();
             Block b = l.getLocation().getBlock();

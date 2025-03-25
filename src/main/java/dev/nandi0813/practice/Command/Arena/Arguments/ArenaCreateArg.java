@@ -5,35 +5,24 @@ import dev.nandi0813.practice.Practice;
 import dev.nandi0813.practice.Util.StringUtil;
 import org.bukkit.entity.Player;
 
-public class ArenaCreateArg
-{
+public class ArenaCreateArg {
 
-    public static void CreateCommand(Player player, String label, String[] args)
-    {
-        if (args.length == 2)
-        {
-            if (Practice.getArenaManager().getArenas().size() < 243)
-            {
+    public static void CreateCommand(Player player, String label, String[] args) {
+        if (args.length == 2) {
+            if (Practice.getArenaManager().getArenas().size() < 243) {
                 String arenaName = args[1];
-                if (Practice.getArenaManager().getArena(arenaName) == null)
-                {
+                if (Practice.getArenaManager().getArena(arenaName) == null) {
                     Arena arena = new Arena(arenaName);
                     Practice.getArenaManager().getArenas().add(arena);
                     arena.saveData();
                     player.sendMessage(StringUtil.CC("&e" + arenaName + " &aarena has been created."));
-                }
-                else
-                {
+                } else {
                     player.sendMessage(StringUtil.CC("&c" + arenaName + " arena already exists."));
                 }
-            }
-            else
-            {
+            } else {
                 player.sendMessage(StringUtil.CC("&cYou can't create more than 243 arenas."));
             }
-        }
-        else
-        {
+        } else {
             player.sendMessage(StringUtil.CC("&c/" + label + " create <name>"));
         }
     }

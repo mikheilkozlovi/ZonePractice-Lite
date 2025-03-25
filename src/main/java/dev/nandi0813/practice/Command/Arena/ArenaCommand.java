@@ -8,17 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ArenaCommand implements CommandExecutor
-{
+public class ArenaCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("zonepractice.setup"))
-            {
+            if (!player.hasPermission("zonepractice.setup")) {
                 player.sendMessage(LanguageManager.getString("no-permission"));
                 return false;
             }
@@ -56,7 +52,7 @@ public class ArenaCommand implements CommandExecutor
             else if (args[0].equalsIgnoreCase("disable"))
                 ArenaDisableArg.DisableCommand(player, label, args);
 
-            // Teleport player to arena positions (1/2/3)
+                // Teleport player to arena positions (1/2/3)
             else if (args[0].equalsIgnoreCase("teleport"))
                 ArenaTeleportArg.TeleportCommand(player, label, args);
 

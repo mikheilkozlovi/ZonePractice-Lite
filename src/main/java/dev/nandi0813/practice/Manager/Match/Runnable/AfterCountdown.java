@@ -8,21 +8,20 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AfterCountdown extends BukkitRunnable
-{
+public class AfterCountdown extends BukkitRunnable {
 
     private final Match match;
-    @Getter private int seconds;
-    @Getter private boolean running = false;
+    @Getter
+    private int seconds;
+    @Getter
+    private boolean running = false;
 
-    public AfterCountdown(Match match)
-    {
+    public AfterCountdown(Match match) {
         this.match = match;
         seconds = ConfigManager.getConfig().getInt("match-settings.after-countdown");
     }
 
-    public void begin()
-    {
+    public void begin() {
         running = true;
         match.setStatus(MatchStatus.END);
 
@@ -33,20 +32,16 @@ public class AfterCountdown extends BukkitRunnable
     }
 
     @Override
-    public void cancel()
-    {
-        if (running)
-        {
+    public void cancel() {
+        if (running) {
             Bukkit.getScheduler().cancelTask(this.getTaskId());
             running = false;
         }
     }
 
     @Override
-    public void run()
-    {
-        if (seconds == 0)
-        {
+    public void run() {
+        if (seconds == 0) {
             this.cancel();
             match.setAfterCountdown(new AfterCountdown(match));
 

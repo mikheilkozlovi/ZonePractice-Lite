@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PracticeTabCompleter implements TabCompleter
-{
+public class PracticeTabCompleter implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args)
-    {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) return null;
 
         Player player = (Player) commandSender;
@@ -27,8 +25,7 @@ public class PracticeTabCompleter implements TabCompleter
             return null;
 
 
-        if (args.length == 1)
-        {
+        if (args.length == 1) {
             arguments.add("lobby");
             arguments.add("arenas");
             arguments.add("eloreset");
@@ -38,15 +35,10 @@ public class PracticeTabCompleter implements TabCompleter
             arguments.add("reload");
 
             StringUtil.copyPartialMatches(args[0], arguments, completion);
-        }
-        else if (args.length == 2)
-        {
-            if (args[0].equalsIgnoreCase("lobby"))
-            {
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("lobby")) {
                 arguments.add("set");
-            }
-            else if (args[0].equalsIgnoreCase("endmatch"))
-            {
+            } else if (args[0].equalsIgnoreCase("endmatch")) {
                 for (Player online : Bukkit.getOnlinePlayers())
                     arguments.add(online.getName());
             }

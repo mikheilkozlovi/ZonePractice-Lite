@@ -15,18 +15,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Party
-{
+public class Party {
 
-    @Getter @Setter private Player leader;
-    @Getter private final List<Player> members = new ArrayList<>();
-    @Getter private final HashMap<Player, Long> invites = new HashMap<>();
+    @Getter
+    @Setter
+    private Player leader;
+    @Getter
+    private final List<Player> members = new ArrayList<>();
+    @Getter
+    private final HashMap<Player, Long> invites = new HashMap<>();
 
-    @Getter @Setter private Match match;
-    @Getter @Setter private int maxPlayerLimit;
+    @Getter
+    @Setter
+    private Match match;
+    @Getter
+    @Setter
+    private int maxPlayerLimit;
 
-    public Party(Player owner)
-    {
+    public Party(Player owner) {
         this.leader = owner;
         members.add(owner);
         maxPlayerLimit = ConfigManager.getInt("party-settings.max-party-members.default");
@@ -37,8 +43,7 @@ public class Party
      *
      * @param newOwner The new owner of the party.
      */
-    public void setNewOwner(Player newOwner)
-    {
+    public void setNewOwner(Player newOwner) {
         leader = newOwner;
         sendMessage(LanguageManager.getString("party.new-leader").replaceAll("%owner%", newOwner.getName()));
     }
@@ -48,8 +53,7 @@ public class Party
      *
      * @param member The player that is joining the party.
      */
-    public void addMember(Player member)
-    {
+    public void addMember(Player member) {
         Profile memberProfile = Practice.getProfileManager().getProfiles().get(member);
 
         members.add(member);
@@ -63,10 +67,9 @@ public class Party
      * Removes a member from the party
      *
      * @param member The player that is being removed from the party.
-     * @param kick If the player is kicked or not.
+     * @param kick   If the player is kicked or not.
      */
-    public void removeMember(Party party, Player member, boolean kick)
-    {
+    public void removeMember(Party party, Player member, boolean kick) {
         Profile memberProfile = Practice.getProfileManager().getProfiles().get(member);
 
         if (kick)
@@ -91,8 +94,7 @@ public class Party
     /**
      * Disband the party, remove all members, and if the party is in a match, end the match
      */
-    public void disband()
-    {
+    public void disband() {
         sendMessage(LanguageManager.getString("party.disband"));
 
         for (Player member : members)
@@ -101,13 +103,10 @@ public class Party
         List<Player> members_copy = new ArrayList<>(members);
         members.clear();
 
-        if (match != null)
-        {
+        if (match != null) {
             match.sendMessage(LanguageManager.getString("party.match-end"), true);
             match.endMatch();
-        }
-        else
-        {
+        } else {
             for (Player member : members_copy)
                 Practice.getInventoryManager().getSpawnInventory().setInventory(member, false);
         }
@@ -120,10 +119,8 @@ public class Party
      *
      * @param message The message you want to send to the members of the party.
      */
-    public void sendMessage(String message)
-    {
-        if (!members.isEmpty())
-        {
+    public void sendMessage(String message) {
+        if (!members.isEmpty()) {
             for (Player player : members)
                 player.sendMessage(StringUtil.CC(message));
         }
@@ -134,8 +131,7 @@ public class Party
      *
      * @return A list of the names of the members of the party.
      */
-    public List<String> getMemberNames()
-    {
+    public List<String> getMemberNames() {
         List<String> memberNames = new ArrayList<>();
         for (Player player : members)
             memberNames.add(player.getName());

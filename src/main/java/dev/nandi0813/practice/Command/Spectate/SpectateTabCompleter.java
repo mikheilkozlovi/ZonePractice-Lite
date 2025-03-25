@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SpectateTabCompleter implements TabCompleter
-{
+public class SpectateTabCompleter implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args)
-    {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) return null;
 
         Player player = (Player) commandSender;
@@ -27,8 +25,7 @@ public class SpectateTabCompleter implements TabCompleter
             return null;
 
 
-        if (args.length == 1)
-        {
+        if (args.length == 1) {
             for (Player online : Bukkit.getOnlinePlayers())
                 if (online != player)
                     arguments.add(online.getName());

@@ -9,22 +9,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class BackendManager
-{
+public class BackendManager {
 
     private static File file;
-    @Getter private static FileConfiguration config;
+    @Getter
+    private static FileConfiguration config;
 
-    public static void createFile(Practice practice)
-    {
+    public static void createFile(Practice practice) {
         file = new File(practice.getDataFolder(), "backend.yml");
         config = YamlConfiguration.loadConfiguration(file);
         save();
         reload();
     }
 
-    public static void save()
-    {
+    public static void save() {
         try {
             config.save(file);
         } catch (IOException e) {
@@ -32,8 +30,7 @@ public class BackendManager
         }
     }
 
-    public static void reload()
-    {
+    public static void reload() {
         try {
             config.load(file);
         } catch (IOException | InvalidConfigurationException e) {

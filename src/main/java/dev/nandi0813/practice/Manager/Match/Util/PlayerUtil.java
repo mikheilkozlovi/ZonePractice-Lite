@@ -13,8 +13,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class PlayerUtil
-{
+public class PlayerUtil {
 
     /**
      * It sets the player's health, food, fire ticks, max health, fall distance, walk speed, potion effects, game mode, and
@@ -22,8 +21,7 @@ public class PlayerUtil
      *
      * @param player The player to set the match player for.
      */
-    public static void setMatchPlayer(Player player)
-    {
+    public static void setMatchPlayer(Player player) {
         player.setHealth(20);
         Bukkit.getScheduler().runTaskLater(Practice.getInstance(), () -> player.setHealth(20), 2L);
         player.setFoodLevel(20);
@@ -41,37 +39,28 @@ public class PlayerUtil
      * It drops all of the items in a player's inventory and hides them from non-match players
      *
      * @param player The player to drop the inventory of.
-     * @param match The match that the player is in.
+     * @param match  The match that the player is in.
      */
-    public static void dropPlayerInventory(Player player, Match match)
-    {
-        for (ItemStack item : player.getInventory().getContents())
-        {
-            if (item != null && !item.getType().equals(Material.AIR))
-            {
+    public static void dropPlayerInventory(Player player, Match match) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && !item.getType().equals(Material.AIR)) {
                 Item droppedItem = player.getWorld().dropItemNaturally(player.getLocation(), item);
                 match.getDroppedItems().add(droppedItem);
 
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers())
-                {
-                    if (!match.getPlayers().contains(onlinePlayer) && !match.getSpectators().contains(onlinePlayer))
-                    {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (!match.getPlayers().contains(onlinePlayer) && !match.getSpectators().contains(onlinePlayer)) {
                         Practice.getEntityHider().hideEntity(onlinePlayer, droppedItem);
                     }
                 }
             }
         }
-        for (ItemStack item : player.getInventory().getArmorContents())
-        {
-            if (item != null && !item.getType().equals(Material.AIR))
-            {
+        for (ItemStack item : player.getInventory().getArmorContents()) {
+            if (item != null && !item.getType().equals(Material.AIR)) {
                 Item droppedItem = player.getWorld().dropItemNaturally(player.getLocation(), item);
                 match.getDroppedItems().add(droppedItem);
 
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers())
-                {
-                    if (!match.getPlayers().contains(onlinePlayer) && !match.getSpectators().contains(onlinePlayer))
-                    {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (!match.getPlayers().contains(onlinePlayer) && !match.getSpectators().contains(onlinePlayer)) {
                         Practice.getEntityHider().hideEntity(onlinePlayer, droppedItem);
                     }
                 }
@@ -86,10 +75,9 @@ public class PlayerUtil
      * Teleports the player to the position of their team
      *
      * @param player The player to teleport
-     * @param match The match that the player is in
+     * @param match  The match that the player is in
      */
-    public static void teleportPlayer(Player player, Match match)
-    {
+    public static void teleportPlayer(Player player, Match match) {
         if (match.getTeams().get(player).equals(TeamEnum.TEAM1))
             player.teleport(match.getGameArena().getPosition1());
         else
@@ -99,11 +87,10 @@ public class PlayerUtil
     /**
      * Hide a player from all other players in a match
      *
-     * @param match The match that the player is in.
+     * @param match  The match that the player is in.
      * @param player The player to hide
      */
-    public static void hidePlayerPartyGames(Match match, Player player)
-    {
+    public static void hidePlayerPartyGames(Match match, Player player) {
         setMatchPlayer(player);
         dropPlayerInventory(player, match);
 
@@ -116,12 +103,12 @@ public class PlayerUtil
         player.spigot().setCollidesWithEntities(false);
     }
 
-    public static int getPing(Player player)
-    {
+    public static int getPing(Player player) {
         try {
             Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
             return (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException |
+                 SecurityException | NoSuchFieldException e) {
             e.printStackTrace();
         }
         return 0;

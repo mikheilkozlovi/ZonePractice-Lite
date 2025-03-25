@@ -24,12 +24,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-public class EntityHider implements Listener
-{
+public class EntityHider implements Listener {
     protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
 
     // Packets that update remote player entities
-    private static final PacketType[] ENTITY_PACKETS = { PacketType.Play.Server.ENTITY_EQUIPMENT,
+    private static final PacketType[] ENTITY_PACKETS = {PacketType.Play.Server.ENTITY_EQUIPMENT,
             PacketType.Play.Server.ENTITY_LOOK, PacketType.Play.Server.NAMED_ENTITY_SPAWN,
             PacketType.Play.Server.COLLECT, PacketType.Play.Server.SPAWN_ENTITY,
             PacketType.Play.Server.SPAWN_ENTITY_PAINTING, PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
@@ -92,10 +91,10 @@ public class EntityHider implements Listener
      * Set the visibility status of a given entity for a particular observer.
      *
      * @param observer - the observer player.
-     * @param entityID   - ID of the entity that will be hidden or made visible.
+     * @param entityID - ID of the entity that will be hidden or made visible.
      * @param visible  - TRUE if the entity should be made visible, FALSE if not.
      * @return TRUE if the entity was visible before this method call, FALSE
-     *         otherwise.
+     * otherwise.
      */
     protected boolean setVisibility(Player observer, int entityID, boolean visible) {
         switch (policy) {
@@ -274,7 +273,7 @@ public class EntityHider implements Listener
 
         if (visibleBefore) {
             PacketContainer destroyEntity = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-            destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
+            destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
 
             // Make the entity disappear
             manager.sendServerPacket(observer, destroyEntity);
@@ -292,7 +291,7 @@ public class EntityHider implements Listener
      * @param observer - the observer.
      * @param entity   - the entity that may be hidden.
      * @return TRUE if the player may see the entity, FALSE if the entity has been
-     *         hidden.
+     * hidden.
      */
     public final boolean canSee(Player observer, Entity entity) {
         validate(observer, entity);

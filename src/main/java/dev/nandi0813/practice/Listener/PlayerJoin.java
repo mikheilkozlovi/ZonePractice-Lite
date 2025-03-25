@@ -11,17 +11,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoin implements Listener
-{
+public class PlayerJoin implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerJoinEvent e)
-    {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoin(PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         e.setJoinMessage(null);
 
-        if (!Practice.getProfileManager().getProfiles().containsKey(player))
-        {
+        if (!Practice.getProfileManager().getProfiles().containsKey(player)) {
             Profile profile = new Profile(player.getUniqueId());
             profile.getFile().setDefaultData();
             Bukkit.getScheduler().runTaskLater(Practice.getInstance(), profile::getData, 3L);

@@ -11,41 +11,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class StartCountdown extends BukkitRunnable
-{
+public class StartCountdown extends BukkitRunnable {
 
     private final Match match;
     private int seconds;
-    @Getter private boolean running = false;
+    @Getter
+    private boolean running = false;
 
-    public StartCountdown(Match match)
-    {
+    public StartCountdown(Match match) {
         this.match = match;
         seconds = ConfigManager.getConfig().getInt("match-settings.start-countdown");
     }
 
-    public void begin()
-    {
+    public void begin() {
         running = true;
         this.runTaskTimer(Practice.getInstance(), 20L, 20L);
     }
 
     @Override
-    public void cancel()
-    {
-        if (running)
-        {
+    public void cancel() {
+        if (running) {
             Bukkit.getScheduler().cancelTask(this.getTaskId());
             running = false;
         }
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
 
-        if (seconds == 0)
-        {
+        if (seconds == 0) {
             this.cancel();
             match.setStartCountdown(new StartCountdown(match));
 
@@ -58,9 +52,7 @@ public class StartCountdown extends BukkitRunnable
             for (Player player : match.getPlayers())
                 for (PotionEffect potionEffect : match.getLadder().getEffects())
                     player.addPotionEffect(potionEffect);
-        }
-        else
-        {
+        } else {
             match.sendMessage(LanguageManager.getString("match.match-starting").replaceAll("%time%", String.valueOf(seconds)), false);
         }
 
