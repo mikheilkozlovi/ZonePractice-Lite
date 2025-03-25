@@ -30,7 +30,6 @@ public class ProfileManager {
             if (folder.isDirectory() && folder.listFiles().length > 0) {
                 for (File profileFile : folder.listFiles()) {
                     if (profileFile.isFile() && profileFile.getName().endsWith(".yml")) {
-                        YamlConfiguration config = YamlConfiguration.loadConfiguration(profileFile);
                         String uuidString = profileFile.getName().replace(".yml", "");
 
                         UUID uuid = UUID.fromString(uuidString);
