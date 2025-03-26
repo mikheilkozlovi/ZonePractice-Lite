@@ -1,4 +1,19 @@
-{
+package dev.nandi0813.practice.Manager.Match.MatchType.Duel;
+
+import dev.nandi0813.practice.Manager.Match.Enum.MatchStatus;
+import dev.nandi0813.practice.Manager.Match.Enum.MatchType;
+import dev.nandi0813.practice.Manager.Match.Match;
+import dev.nandi0813.practice.Manager.Match.MatchType.PartyFFA.PartyFFA;
+import dev.nandi0813.practice.Manager.Profile.Profile;
+import dev.nandi0813.practice.Manager.Profile.ProfileStatus;
+import dev.nandi0813.practice.Practice;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+public class DuelListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e) {
