@@ -3,6 +3,7 @@ package dev.nandi0813.practice.Manager.Match.MatchType.Duel;
 import dev.nandi0813.practice.Manager.Match.Enum.MatchStatus;
 import dev.nandi0813.practice.Manager.Match.Enum.MatchType;
 import dev.nandi0813.practice.Manager.Match.Match;
+import dev.nandi0813.practice.Manager.Match.MatchType.PartyFFA.PartyFFA;
 import dev.nandi0813.practice.Manager.Profile.Profile;
 import dev.nandi0813.practice.Manager.Profile.ProfileStatus;
 import dev.nandi0813.practice.Practice;
@@ -23,16 +24,14 @@ public class DuelListener implements Listener {
 
             if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.DUEL)) {
                 if (match.getStatus().equals(MatchStatus.LIVE)) {
-                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+                    boolean isVoid = e.getCause().equals(EntityDamageEvent.DamageCause.VOID);
+
+                    if (isVoid || player.getHealth() - e.getFinalDamage() <= 0) {
+                        // Apply damage animation to die.
+                        player.damage(0);
+                        Duel.killPlayer(match, player, isVoid);
+                        // Cancel the damage event
                         e.setCancelled(true);
-                        Duel.killPlayer(match, player, true);
-                    }
-
-                    if (player.getHealth() - e.getFinalDamage() <= 0) {
-                        if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))
-                            e.setCancelled(true);
-
-                        Duel.killPlayer(match, player, false);
                     }
                 } else {
                     e.setCancelled(true);
