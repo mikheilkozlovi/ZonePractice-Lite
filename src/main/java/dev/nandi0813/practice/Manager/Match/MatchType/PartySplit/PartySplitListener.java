@@ -36,15 +36,9 @@ public class PartySplitListener implements Listener {
 
             if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_SPLIT)) {
                 if (match.getStatus().equals(MatchStatus.LIVE) && match.getAlivePlayers().contains(player)) {
-                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
-                        e.setCancelled(true);
-                        PartySplit.killPlayer(match, player, true);
-                    }
-
-                    if (player.getHealth() - e.getFinalDamage() <= 0) {
-                        if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))
-                            e.setCancelled(true);
-
+                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID) || player.getHealth() - e.getFinalDamage() <= 0) {
+                        // Apply damage animation to die.
+                        player.damage(0);
                         PartySplit.killPlayer(match, player, true);
                     }
                 } else {

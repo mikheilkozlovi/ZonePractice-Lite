@@ -5,6 +5,7 @@ import dev.nandi0813.practice.Manager.File.LanguageManager;
 import dev.nandi0813.practice.Manager.Match.Enum.MatchStatus;
 import dev.nandi0813.practice.Manager.Match.Enum.MatchType;
 import dev.nandi0813.practice.Manager.Match.Match;
+import dev.nandi0813.practice.Manager.Match.MatchType.PartySplit.PartySplit;
 import dev.nandi0813.practice.Manager.Profile.ProfileStatus;
 import dev.nandi0813.practice.Manager.Profile.Profile;
 import dev.nandi0813.practice.Practice;
@@ -30,15 +31,9 @@ public class PartyFFAListener implements Listener {
 
             if (profile.getStatus().equals(ProfileStatus.MATCH) && match.getType().equals(MatchType.PARTY_FFA)) {
                 if (match.getStatus().equals(MatchStatus.LIVE) && match.getAlivePlayers().contains(player)) {
-                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
-                        e.setCancelled(true);
-                        PartyFFA.killPlayer(match, player, true);
-                    }
-
-                    if (player.getHealth() - e.getFinalDamage() <= 0) {
-                        if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))
-                            e.setCancelled(true);
-
+                    if (e.getCause().equals(EntityDamageEvent.DamageCause.VOID) || player.getHealth() - e.getFinalDamage() <= 0) {
+                        // Apply damage animation to die.
+                        player.damage(0);
                         PartyFFA.killPlayer(match, player, true);
                     }
                 } else {
