@@ -1,5 +1,6 @@
 package dev.nandi0813.practice.Util;
 
+import dev.nandi0813.practice.Manager.File.ConfigManager;
 import dev.nandi0813.practice.Manager.Match.Match;
 import dev.nandi0813.practice.Manager.Profile.Profile;
 import dev.nandi0813.practice.Manager.Profile.ProfileStatus;
@@ -73,6 +74,13 @@ public class PlayerHider implements Listener {
                         if (match.getPlayers().contains(p)) {
                             player.showPlayer(p);  // Spectator sees players in their match
                             p.hidePlayer(player);  // Players in the match do not see the spectator
+                        } else if (match.getSpectators().contains(p)) {
+                            if (ConfigManager.getBoolean("match-settings.hide-other-spectators")) {
+                                player.hidePlayer(p);  // Hide other spectators if configured
+                            } else {
+                                player.showPlayer(p);  // Show other spectators if not hidden
+                            }
+                            p.hidePlayer(player);  // Other spectators do not see this spectator
                         } else {
                             player.hidePlayer(p);  // Spectator does not see players from other matches                    
                             p.hidePlayer(player);  // Players outside the match do not see the spectator
