@@ -158,8 +158,9 @@ public class Match {
             removePlayer(spectator, false);
         spectators.clear();
 
+        String arenaWorldName = Practice.getInstance().getConfig().getString("arena-world-name", "arenas");
         boolean shouldUnload = true;
-        for (Player player : Bukkit.getWorld("arenas").getPlayers()) {
+        for (Player player : Bukkit.getWorld(arenaWorldName).getPlayers()) {
             Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
 
             if (match != null && match.getArena().getName().equals(gameArena.getName())) {

@@ -1,5 +1,6 @@
 package dev.nandi0813.practice.Util;
 
+import dev.nandi0813.practice.Manager.File.ConfigManager;
 import dev.nandi0813.practice.Manager.Match.Match;
 import dev.nandi0813.practice.Manager.Profile.Profile;
 import dev.nandi0813.practice.Manager.Profile.ProfileStatus;
@@ -45,14 +46,46 @@ public class PlayerHider implements Listener {
         Player player = e.getPlayer();
         Profile profile = Practice.getProfileManager().getProfiles().get(player);
 
-        // Handling SPECTATE mode regardless of lobby
-        if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
-            Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
+        if (ServerManager.getLobby() != null) {
+            if (e.getFrom().getWorld().equals(ServerManager.getLobby().getWorld()) && e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
+                if (profile.getStatus().equals(ProfileStatus.MATCH)) {
+                    Match match = Practice.getMatchManager().getLiveMatchByPlayer(player);
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (player != p) {
-                    player.showPlayer(p); // Spectator sees all players
-                    p.hidePlayer(player); // But no one can see the spectator
+                    // Hide all non-matching players from this player
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (player != p) {
+                            if (!match.getPlayers().contains(p)) {
+                                player.hidePlayer(p); // Hide non-match players
+                                p.hidePlayer(player); // Hide the player from non-matching players
+                            } else {
+                                player.showPlayer(p); // Show match players
+                                p.showPlayer(player); // Show the player to match players
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
+                Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
+
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (player != p) {
+                        if (match.getPlayers().contains(p)) {
+                            player.showPlayer(p);  // Spectator sees players in their match
+                            p.hidePlayer(player);  // Players in the match do not see the spectator
+                        } else if (match.getSpectators().contains(p)) {
+                            if (ConfigManager.getBoolean("match-settings.hide-other-spectators")) {
+                                player.hidePlayer(p);  // Hide other spectators if configured
+                            } else {
+                                player.showPlayer(p);  // Show other spectators if not hidden
+                            }
+                            p.hidePlayer(player);  // Other spectators do not see this spectator
+                        } else {
+                            player.hidePlayer(p);  // Spectator does not see players from other matches                    
+                            p.hidePlayer(player);  // Players outside the match do not see the spectator
+                        }
+                    }
                 }
             }
         }
@@ -61,11 +94,13 @@ public class PlayerHider implements Listener {
         if (ServerManager.getLobby() != null &&
                 e.getFrom().getWorld().equals(ServerManager.getLobby().getWorld()) &&
                 e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
+            // Additional handling for lobby to arena if needed
         }
 
-        // Movement within the arena (does not depend on lobby, already handled for SPECTATE above)
+        // Movement within the arena (already handled for SPECTATE above)
         if (e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) &&
                 e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
+            // Additional handling for movement inside arena if needed
         }
 
         // Transition from arena to lobby (depends on lobby)
