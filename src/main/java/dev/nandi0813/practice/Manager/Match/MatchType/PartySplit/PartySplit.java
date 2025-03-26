@@ -64,6 +64,11 @@ public class PartySplit {
      * @param winner The player who won the match. If the match ended in a draw, this will be null.
      */
     public static void endMatch(Match match, Player winner) {
+        List<String> spectators = new ArrayList<>();
+        for (Player spectator : match.getSpectators())
+            if (!spectator.hasPermission("zonepractice.spectate.silent"))
+                spectators.add(spectator.getName());
+
         if (winner != null) {
             ArrayList<String> winners = new ArrayList<>();
             ArrayList<String> losers = new ArrayList<>();
@@ -76,6 +81,8 @@ public class PartySplit {
 
             for (String line : LanguageManager.getList("match.partysplit.match-end")) {
                 match.sendMessage(line
+                                .replaceAll("%size%", String.valueOf(spectators.size()))
+                                .replaceAll("%spectators%", spectators.toString().replace("[", "").replace("]", ""))
                                 .replaceAll("%winnerTeam%", match.getTeams().get(winner).getName())
                                 .replaceAll("%winnerPlayers%", winners.toString().replace("[", "").replace("]", ""))
                                 .replaceAll("%loserTeam%", TeamUtil.getOppositeTeam(match.getTeams().get(winner)).getName())
@@ -84,7 +91,10 @@ public class PartySplit {
             }
         } else {
             for (String line : LanguageManager.getList("match.partysplit.match-end-draw"))
-                match.sendMessage(line, true);
+                match.sendMessage(line
+                                .replaceAll("%size%", String.valueOf(spectators.size()))
+                                .replaceAll("%spectators%", spectators.toString().replace("[", "").replace("]", "")),
+                        true);
         }
     }
 

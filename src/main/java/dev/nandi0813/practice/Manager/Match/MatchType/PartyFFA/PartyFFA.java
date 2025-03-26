@@ -34,6 +34,11 @@ public class PartyFFA {
      * @param winner The winner of the match. If the match ended in a draw, this will be null.
      */
     public static void endMatch(Match match, Player winner) {
+        List<String> spectators = new ArrayList<>();
+        for (Player spectator : match.getSpectators())
+            if (!spectator.hasPermission("zonepractice.spectate.silent"))
+                spectators.add(spectator.getName());
+
         if (winner != null) {
             ArrayList<String> losers = new ArrayList<>();
             for (Player player : match.getPlayers())
@@ -46,7 +51,10 @@ public class PartyFFA {
                                 .replace("[", "").replace("]", "")), true);
         } else {
             for (String line : LanguageManager.getList("match.partyffa.match-end-draw"))
-                match.sendMessage(line, true);
+                match.sendMessage(line
+                                .replaceAll("%size%", String.valueOf(spectators.size()))
+                                .replaceAll("%spectators%", spectators.toString().replace("[", "").replace("]", "")),
+                        true);
         }
     }
 
