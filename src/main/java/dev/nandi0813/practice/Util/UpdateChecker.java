@@ -36,7 +36,7 @@ public class UpdateChecker {
 
     public static void check(Practice practice) {
         if (ConfigManager.getBoolean("notify-updates")) {
-            new UpdateChecker(practice, 101928).getVersion(version ->
+            new UpdateChecker(practice, 121989).getVersion(version ->
             {
                 if (!practice.getDescription().getVersion().equals(version))
                     Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
