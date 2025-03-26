@@ -69,38 +69,27 @@ public class PlayerHider implements Listener {
             if (profile.getStatus().equals(ProfileStatus.SPECTATE)) {
                 Match match = Practice.getMatchManager().getLiveMatchBySpectator(player);
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (player != p) {
-                        if (match.getPlayers().contains(p)) {
-                            player.showPlayer(p);  // Spectator sees players in their match
-                            p.hidePlayer(player);  // Players in the match do not see the spectator
-                        } else if (match.getSpectators().contains(p)) {
-                            if (ConfigManager.getBoolean("match-settings.hide-other-spectators")) {
-                                player.hidePlayer(p);  // Hide other spectators if configured
+                if (match != null) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (player != p) {
+                            if (match.getPlayers().contains(p)) {
+                                player.showPlayer(p);  // Spectator sees players in their match
+                                p.hidePlayer(player);  // Players in the match do not see the spectator
+                            } else if (match.getSpectators().contains(p)) {
+                                if (ConfigManager.getBoolean("match-settings.hide-other-spectators")) {
+                                    player.hidePlayer(p);  // Hide other spectators if configured
+                                } else {
+                                    player.showPlayer(p);  // Show other spectators if not hidden
+                                }
+                                p.hidePlayer(player);  // Other spectators do not see this spectator
                             } else {
-                                player.showPlayer(p);  // Show other spectators if not hidden
+                                player.hidePlayer(p);  // Spectator does not see players from other matches
+                                p.hidePlayer(player);  // Players outside the match do not see the spectator
                             }
-                            p.hidePlayer(player);  // Other spectators do not see this spectator
-                        } else {
-                            player.hidePlayer(p);  // Spectator does not see players from other matches                    
-                            p.hidePlayer(player);  // Players outside the match do not see the spectator
                         }
                     }
                 }
             }
-        }
-
-        // Transition from lobby to arena (depends on lobby)
-        if (ServerManager.getLobby() != null &&
-                e.getFrom().getWorld().equals(ServerManager.getLobby().getWorld()) &&
-                e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
-            // Additional handling for lobby to arena if needed
-        }
-
-        // Movement within the arena (already handled for SPECTATE above)
-        if (e.getFrom().getWorld().equals(Practice.getArenaManager().getArenasWorld()) &&
-                e.getTo().getWorld().equals(Practice.getArenaManager().getArenasWorld())) {
-            // Additional handling for movement inside arena if needed
         }
 
         // Transition from arena to lobby (depends on lobby)
